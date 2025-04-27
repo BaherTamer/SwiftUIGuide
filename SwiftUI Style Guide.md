@@ -348,3 +348,78 @@ struct ColorBackgroundModifier: ViewModifier {
     }
 }
 ```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Follow Consistent Naming Conventions for SwiftUI Views
+
+**Why?**
+> Using consistent naming conventions for SwiftUI views helps maintain clarity, improves code readability, and makes it easier to identify the purpose of a view at a glance. These naming rules allow developers to quickly differentiate between screens, reusable views, and smaller UI components.
+
+<br>
+
+1️⃣ When creating a SwiftUI screen (a top-level view that represents a full screen), use the `Screen` suffix to clearly indicate its role.
+
+``` swift
+// Avoid
+OrderDetailsView()
+CartView()
+```
+
+``` swift
+// Use
+OrderDetailsScreen()
+CartScreen()
+```
+
+<br>
+
+2️⃣ When creating a general reusable views that are not full screens but still serve as major components, use the `View` suffix.
+
+``` swift
+// Use
+ProductCardView()
+BannerView()
+```
+
+<br>
+
+3️⃣ When creating a small, reusable UI components (such as buttons, labels, tags, and sections), omit the View suffix to keep the name clean and concise.
+
+``` swift
+// Avoid
+UnderlinedButtonView()
+SectionHeaderView()
+```
+
+``` swift
+// Use
+UnderlinedButton()
+SectionHeader()
+```
+
+<br>
+
+4️⃣ When creating small reusable components with names similar to built-in SwiftUI views (e.g., Slider, Picker), use the App prefix to distinguish your custom components from SwiftUI’s built-in ones.
+
+``` swift
+// Use
+AppSlider()
+AppPicker()
+```
+
+<br>
+
+---
+
+<br>
+
+
+
+
+
+
