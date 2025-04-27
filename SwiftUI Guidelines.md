@@ -1,4 +1,4 @@
-# SwiftUI Style Guide:
+# SwiftUI Guidelines:
 
 ### 💠 Use `Label` Instead of `HStack` for Icon + Text Combinations
 
