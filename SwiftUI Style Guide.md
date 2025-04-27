@@ -209,10 +209,6 @@ struct ReusableView: View {
 
 <br>
 
----
-
-<br>
-
 ### 💠 Use `verbatim` Parameter for `Text` When Displaying Non-Localized Strings
 
 **Why?**
