@@ -418,6 +418,49 @@ AppPicker()
 
 <br>
 
+### 💠 When to Encapsulate a Component into Its Own `View` Struct?
+
+**Why?**
+> Encapsulating components into their own View structs improves code organization, readability, maintainability, and reusability.
+
+<br>
+
+**1️⃣ When It Contains Complex Logic**
+* If the view involves complex logic (such as multiple states, interactions, or calculations), encapsulating it into a separate View struct keeps your code cleaner and more modular.
+
+<br>
+
+**2️⃣ When the View Is Reusable**
+* Encapsulate views into their own structs when they need to be reused in multiple places. This improves maintainability and ensures consistency across your app.
+
+<br>
+
+**3️⃣ When the View Code Is Big**
+* If a view has a lot of code or multiple layers of nested views, it’s a good idea to encapsulate it. This makes the code easier to manage, debug, and maintain.
+
+<br>
+
+**4️⃣ When the View Needs to Handle Its Own State**
+* If a view has state management or complex interactions (e.g., sliders, or toggles with unique behaviors), it’s a good practice to encapsulate it. This ensures the view has full control over its internal state without affecting other views.
+
+<br>
+
+**5️⃣ When the View Has Its Own Business Logic**
+* If a view has its own small business logic (like fetching data, or reacting to local changes), it should encapsulate that logic inside itself rather than pushing it up to the parent view. This keeps the parent view simpler and the logic closely tied to the UI it affects.
+
+<br>
+
+**6️⃣ When You Need to Handle Animation or Transitions**
+* For views that handle animations or complex transitions, encapsulating them helps organize animation logic separately, making it easier to tweak or reuse.
+
+<br>
+
+**7️⃣ When You Need to Apply Specific Modifiers to a View**
+* If a view requires several specific modifiers (such as padding, background, or cornerRadius), encapsulating the view ensures that all the necessary modifiers are applied in a clean and reusable way.
+
+
+
+
 
 
 
