@@ -323,3 +323,48 @@ Text(12, format: .percent) // 12%
 Text(500, format: .currency(code: "egp")) // EGP 500
 Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
 ```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use Custom Modifiers Only When Necessary — Otherwise, Use `View` Extensions
+
+**Why?**
+> Custom modifiers should be used only when you need to work with SwiftUI state, environment properties, or manage complex view-specific logic. For simple visual modifications, creating a `View` extension function is a cleaner, simpler approach that improves readability and reduces unnecessary complexity in your code.
+
+``` swift
+// No need to be used as custom modifier
+extension View {
+    func roundedBorders(
+        radius: CGFloat,
+        color: Color,
+        lineWidth: CGFloat = 1
+    ) -> some View {
+        self
+            .clipShape(.rect(cornerRadius: radius))
+            .overlay {
+                RoundedRectangle(cornerRadius: radius)
+                    .stroke(color, lineWidth: lineWidth)
+            }
+    }
+}
+```
+
+``` swift
+// Need to be used as custom modifier
+struct ColorBackgroundModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+    
+    private var color: Color {
+        colorScheme == .dark ? .blue : .cyan
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .background(color)
+    }
+}
+```
