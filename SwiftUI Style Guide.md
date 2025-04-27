@@ -169,3 +169,126 @@ struct ParentView: View {
     }
 }
 ```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use `LocalizedStringKey` as the Input Type for Reusable Components
+
+**Why?**
+> Using `LocalizedStringKey` ensures that your custom SwiftUI views support localization seamlessly. This enables the use of localized strings without extra manual effort.
+
+``` swift
+// Don't
+struct ReusableView: View {
+    let title: String
+
+    var body: some View {
+        // Content
+    }
+}
+```
+
+``` swift
+// Do
+struct ReusableView: View {
+    let title: LocalizedStringKey
+
+    var body: some View {
+        // Content
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use `String.LocalizationValue` for Localized Entity Properties
+
+**Why?**
+> Using `String.LocalizationValue` ensures that your models or entities with localized strings are compatible with the localization system in Swift. This type allows automatic handling of localized values and ensures that your app is ready for different languages without extra code.
+
+``` swift
+// Don't
+struct Toast {
+    let title: String
+    let message: String
+}
+```
+
+``` swift
+// Do
+struct Toast {
+    let title: String.LocalizationValue
+    let message: String.LocalizationValue
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use `verbatim` Parameter for `Text` When Displaying Non-Localized Strings
+
+**Why?**
+> The `verbatim` parameter should be used when you need to display a non-localized string. By default, `Text` uses `LocalizedStringKey`, which is designed for localized strings. Using `verbatim` ensures that your string is treated as raw text and not mistakenly processed for localization and displayed in `Localizable` table.
+
+``` swift
+// Don't
+Text("\(product.title) - \(product.price)")
+```
+
+``` swift
+// Do
+Text(verbatim: "\(product.title) - \(product.price)")
+```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use `ImageResource` Instead of `String` for Image Names
+
+**Why?**
+> Using `ImageResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with images.
+
+``` swift
+// Don't
+Image("circle.fill")
+```
+
+``` swift
+// Do
+Image(.circleFill)
+```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use `ColorResource` Instead of `String` for Colors
+
+**Why?**
+> Using `ColorResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with colors.
+
+``` swift
+// Don't
+Color("blue.light")
+```
+
+``` swift
+// Do
+Color(.blueLight)
+```
