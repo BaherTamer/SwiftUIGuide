@@ -292,3 +292,34 @@ Color("blue.light")
 // Do
 Color(.blueLight)
 ```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use `Text` `format` Parameter Instead of String Interpolation or Custom Formatters
+
+**Why?**
+> Using the `format` parameter with `Text` allows you to leverage Swift’s built-in formatting capabilities, ensuring consistent, locale-aware formatting and reducing the need for custom logic or string interpolation. It improves code clarity, maintainability, and ensures the proper handling of various data types like numbers, dates, and currencies.
+
+**Tip:**
+> When fetching date strings from a backend, convert the `String` to a `Date` in your model.
+
+**Resource:**
+> Check this website for all [SwiftUI Format Styles](https://goshdarnformatstyle.com/) in details and TONS of examples.
+
+``` swift
+// Don't
+Text("\(12)%")
+Text("\(500) EGP")
+Text("\(dateFormatter.string(from: someDate))")
+```
+
+``` swift
+// Do
+Text(12, format: .percent) // 12%
+Text(500, format: .currency(code: "egp")) // EGP 500
+Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
+```
