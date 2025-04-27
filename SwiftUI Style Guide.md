@@ -112,13 +112,20 @@ SheetView(
 ``` swift
 // Avoid
 .onAppear {
-    viewModel.onAppear()
+    viewOnAppear()
+}
+.onChange(of: state) { oldValue, newValue in
+    // Action Code
 }
 ```
 
 ``` swift
 // Use
-.onAppear(perform: viewModel.onAppear)
+.onAppear(perform: viewOnAppear)
+.onChange(of: state, stateDidChange)
+
+private func viewOnAppear() {}
+private func stateDidChange(_ oldValue: Int, newValue: Int) {}
 ```
 
 <br>
