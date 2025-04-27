@@ -27,6 +27,7 @@ private func titleText() -> some View {
 private func circleIcon() -> some View {
     Image(systemName: "circle")
 }
+
 ```
 
 <br>
@@ -65,3 +66,106 @@ private func amountText() -> some View {
 }
 ```
 
+<br>
+
+---
+
+<br>
+
+### 💠 Prefer Explicit Parameters Over Trailing Closures for Callbacks
+
+**Why?**
+When a function or initializer has one or more callbacks, using explicit parameter labels improves clarity. It makes the code easier to read, reason about, and maintain — especially when scanning quickly or working with unfamiliar code.
+
+``` swift
+// Don't
+ContentView {
+    // Submit Action
+} onDismiss: {
+    // Dismiss Action
+}
+```
+
+``` swift
+// Do
+TestView(
+    onSubmit: {
+        // Submit Action
+    },
+    onDismiss: {
+        // Dismiss Action
+    }
+)
+```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Prefer Passing Function Names Instead of Closures
+
+**Why?**
+Passing a function name directly makes your code cleaner, shorter, and more readable. It avoids unnecessary closures, improves clarity.
+
+``` swift
+// Don't
+.onAppear {
+    test()
+}
+```
+
+``` swift
+// Do
+.onAppear(perform: test)
+```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Avoid Using Outer Padding for Reusable Components
+
+**Why?**
+Padding should be applied where the view is used, not within reusable components themselves. This keeps components flexible and adaptable to different contexts, preventing unexpected layout issues and making your views easier to customize.
+
+``` swift
+// Don't
+struct ReusableView: View {
+    var body: some View {
+        VStack {
+            // Content
+        }
+        // Modifiers
+        .padding(.horizontal, 25)
+    }
+}
+
+struct ParentView: View {
+    var body: some View {
+        ReusableView()
+    }
+}
+```
+
+``` swift
+// Do
+struct ReusableView: View {
+    var body: some View {
+        VStack {
+            // Content
+        }
+        // Modifiers
+    }
+}
+
+struct ParentView: View {
+    var body: some View {
+        ReusableView()
+            .padding(.horizontal, 25)
+    }
+}
+```
