@@ -79,7 +79,7 @@ private func amountText() -> some View {
 
 ``` swift
 // Avoid
-ContentView {
+SheetView {
     // Submit Action
 } onDismiss: {
     // Dismiss Action
@@ -88,7 +88,7 @@ ContentView {
 
 ``` swift
 // Use
-TestView(
+SheetView(
     onSubmit: {
         // Submit Action
     },
