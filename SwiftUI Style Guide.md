@@ -112,13 +112,13 @@ TestView(
 ``` swift
 // Avoid
 .onAppear {
-    test()
+    viewModel.onAppear()
 }
 ```
 
 ``` swift
 // Use
-.onAppear(perform: test)
+.onAppear(perform: viewModel.onAppear)
 ```
 
 <br>
