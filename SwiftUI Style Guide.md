@@ -6,7 +6,7 @@
 > `Label` is a semantic, built-in SwiftUI component specifically designed for pairing an icon with text. It improves accessibility, reduces boilerplate, and adapts better to dynamic type, right-to-left languages, and other system-driven layout changes.
 
 ``` swift
-// Don't
+// Avoid
 HStack(spacer: 6) {
     Image(systemName: "circle")
     Text("Task")
@@ -14,7 +14,7 @@ HStack(spacer: 6) {
 ```
 
 ``` swift
-// Do
+// Use
 Label(
     title: titleText,
     icon: circleIcon
@@ -42,7 +42,7 @@ private func circleIcon() -> some View {
 > `LabeledContent` is a purpose-built SwiftUI view for showing a label and a value. It improves consistency, accessibility, dynamic type handling, and aligns better with system styles, especially in forms and settings screens.
 
 ``` swift
-// Don't
+// Avoid
 HStack {
     Text("Price")
     Spacer()
@@ -51,7 +51,7 @@ HStack {
 ```
 
 ``` swift
-// Do
+// Use
 LabeledContent(
     content: amountText,
     label: priceText
@@ -78,7 +78,7 @@ private func amountText() -> some View {
 > When a function or initializer has one or more callbacks, using explicit parameter labels improves clarity. It makes the code easier to read, reason about, and maintain — especially when scanning quickly or working with unfamiliar code.
 
 ``` swift
-// Don't
+// Avoid
 ContentView {
     // Submit Action
 } onDismiss: {
@@ -87,7 +87,7 @@ ContentView {
 ```
 
 ``` swift
-// Do
+// Use
 TestView(
     onSubmit: {
         // Submit Action
@@ -110,14 +110,14 @@ TestView(
 > Passing a function name directly makes your code cleaner, shorter, and more readable. It avoids unnecessary closures, improves clarity.
 
 ``` swift
-// Don't
+// Avoid
 .onAppear {
     test()
 }
 ```
 
 ``` swift
-// Do
+// Use
 .onAppear(perform: test)
 ```
 
@@ -133,7 +133,7 @@ TestView(
 > Reusable components should focus only on their internal layout and content, not their external spacing. This keeps components flexible and adaptable to different contexts and gives the parent view full control over padding and layout.
 
 ``` swift
-// Don't
+// Avoid
 struct ReusableView: View {
     var body: some View {
         VStack {
@@ -152,7 +152,7 @@ struct ParentView: View {
 ```
 
 ``` swift
-// Do
+// Use
 struct ReusableView: View {
     var body: some View {
         VStack {
@@ -182,7 +182,7 @@ struct ParentView: View {
 > Using `LocalizedStringKey` ensures that your custom SwiftUI views support localization seamlessly. This enables the use of localized strings without extra manual effort.
 
 ``` swift
-// Don't
+// Avoid
 struct ReusableView: View {
     let title: String
 
@@ -193,7 +193,7 @@ struct ReusableView: View {
 ```
 
 ``` swift
-// Do
+// Use
 struct ReusableView: View {
     let title: LocalizedStringKey
 
@@ -209,29 +209,6 @@ struct ReusableView: View {
 
 <br>
 
-### 💠 Use `String.LocalizationValue` for Localized Entity Properties
-
-**Why?**
-> Using `String.LocalizationValue` ensures that your models or entities with localized strings are compatible with the localization system in Swift. This type allows automatic handling of localized values and ensures that your app is ready for different languages without extra code.
-
-``` swift
-// Don't
-struct Toast {
-    let title: String
-    let message: String
-}
-```
-
-``` swift
-// Do
-struct Toast {
-    let title: String.LocalizationValue
-    let message: String.LocalizationValue
-}
-```
-
-<br>
-
 ---
 
 <br>
@@ -242,12 +219,12 @@ struct Toast {
 > The `verbatim` parameter should be used when you need to display a non-localized string. By default, `Text` uses `LocalizedStringKey`, which is designed for localized strings. Using `verbatim` ensures that your string is treated as raw text and not mistakenly processed for localization and displayed in `Localizable` table.
 
 ``` swift
-// Don't
+// Avoid
 Text("\(product.title) - \(product.price)")
 ```
 
 ``` swift
-// Do
+// Use
 Text(verbatim: "\(product.title) - \(product.price)")
 ```
 
@@ -263,12 +240,12 @@ Text(verbatim: "\(product.title) - \(product.price)")
 > Using `ImageResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with images.
 
 ``` swift
-// Don't
+// Avoid
 Image("circle.fill")
 ```
 
 ``` swift
-// Do
+// Use
 Image(.circleFill)
 ```
 
@@ -284,12 +261,12 @@ Image(.circleFill)
 > Using `ColorResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with colors.
 
 ``` swift
-// Don't
+// Avoid
 Color("blue.light")
 ```
 
 ``` swift
-// Do
+// Use
 Color(.blueLight)
 ```
 
@@ -311,14 +288,14 @@ Color(.blueLight)
 > Check this website for all [SwiftUI Format Styles](https://goshdarnformatstyle.com/) in details and TONS of examples.
 
 ``` swift
-// Don't
+// Avoid
 Text("\(12)%")
 Text("\(500) EGP")
 Text("\(dateFormatter.string(from: someDate))")
 ```
 
 ``` swift
-// Do
+// Use
 Text(12, format: .percent) // 12%
 Text(500, format: .currency(code: "egp")) // EGP 500
 Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
