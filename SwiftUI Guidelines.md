@@ -498,7 +498,38 @@ func makeContent() -> some View {
 }
 ```
 
+<br>
 
+---
+
+<br>
+
+### 🌟 Use Lazy Stacks With Scrollable Content
+
+**Why?**
+> When you have a scrollable view that contains a list of items, you should use lazy containers (`LazyVStack`, `LazyHStack`) instead of regular stacks. Lazy stacks only create the views currently needed for display, improving performance, memory usage, and scrolling smoothness, especially with large data sets.
+
+``` swift
+// Avoid
+ScrollView {
+    VStack {
+        ForEach(0..<1000) { index in
+            ...
+        }
+    }
+}
+```
+
+``` swift
+// Use
+ScrollView {
+    LazyVStack {
+        ForEach(0..<1000) { index in
+            ...
+        }
+    }
+}
+```
 
 
 
