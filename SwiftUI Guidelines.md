@@ -568,5 +568,39 @@ contentView
     )
 ```
 
+<br>
 
+---
+
+<br>
+
+### 🌟 Don’t Instantiate State Properties
+
+**Why?**
+> Dynamic property instantiation (e.g., creating a `@StateObject` or `initializing` @State values inside a view) can lead to slow updates, unexpected reinitializations, and inefficient UI rebuilding. Instead, inject dependencies and bind values using `@ObservedObject` or `@Binding` to make your views lighter, faster, and more predictable.
+
+**Apple's SwiftUI Team Says:**
+> Common sources of slow updates: Dynamic Property instantiation, such as allocating and initializing a state object or initializing state.
+
+``` swift
+// Avoid
+struct ContentView: View {
+    @StateObject var viewModel: ContentVM
+}
+
+struct ContentView: View {
+    @State var age: Int
+}
+```
+
+``` swift
+// Use
+struct ContentView: View {
+    @ObservedObject var viewModel: ContentVM
+}
+
+struct ContentView: View {
+    @Binding var age: Int
+}
+```
 
