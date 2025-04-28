@@ -423,6 +423,9 @@ AppPicker()
 **Why?**
 > Encapsulating components into their own View structs improves code organization, readability, maintainability, and reusability.
 
+**Apple's SwiftUI Team Says:**
+> Since views are declarative descriptions, splitting a view into multiple smaller views does not impact performance, allowing developers to organize their code without compromising efficiency.
+
 <br>
 
 **1️⃣ When It Contains Complex Logic**
@@ -458,7 +461,42 @@ AppPicker()
 **7️⃣ When You Need to Apply Specific Modifiers to a View**
 * If a view requires several specific modifiers (such as padding, background, or cornerRadius), encapsulating the view ensures that all the necessary modifiers are applied in a clean and reusable way.
 
+<br>
 
+---
+
+<br>
+
+### 🌟 Avoid Using `AnyView` — Prefer `@ViewBuilder` When Needed
+
+**Why?**
+> Using `AnyView` hides the real type of your SwiftUI views, making it harder for SwiftUI to optimize rendering, diffing, and animation. It forces SwiftUI to treat the view as opaque, losing all the benefits of type-safety, performance optimizations, and compile-time checks. Instead, use `@ViewBuilder` to return different view types while preserving SwiftUI’s ability to optimize.
+
+**Apple's SwiftUI Team Says:**
+> `AnyView` makes it hard for SwiftUI to optimize and identify each view because it sees the return value for all as `AnyView`, avoid it as much as possible, use `@ViewBuilder` if needed.
+
+``` swift
+// Avoid
+func makeContent() -> AnyView {
+    if isPremium {
+        return AnyView(...)
+    } else {
+        return AnyView(...)
+    }
+}
+```
+
+``` swift
+// Use
+@ViewBuilder
+func makeContent() -> some View {
+    if isPremium {
+        ...
+    } else {
+        ...
+    }
+}
+```
 
 
 
