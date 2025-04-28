@@ -648,3 +648,49 @@ struct ContentView: View {
     }
 }
 ```
+
+<br>
+
+---
+
+<br>
+
+### 🌟 Avoid Adding if Conditions Inside `ForEach`
+
+**Why?**
+> This leads to dynamic view counts (either 0 or 1 view per item) to determine whether it's displayed or not. SwiftUI has to build all possible views just to figure out the identifiers and layout, which hurts performance, especially in large lists. Instead, filter the array first, then pass the filtered result into `ForEach`.
+
+**Apple's SwiftUI Team Says:**
+> It might be tempting to add a filter using a conditional view. The number of views became variable, it's either one or zero. This is bad because it results in list needing to build all the views to retrieve the row identifiers because it doesn't know how many views each element resolves to.
+
+``` swift
+// Avoid
+struct ContentView: View {
+    var body: some View {
+        ...
+        ForEach(allItems) { item in
+            if item.isActive {
+                ...
+            }
+        }
+        ...
+    }
+}
+```
+
+``` swift
+// Use
+struct ContentView: View {
+    private var filteredItems: [Item] {
+        allItems.filter({$0.isActive}))
+    }
+
+    var body: some View {
+        ...
+        ForEach(filteredItems) { item in
+            ...
+        }
+        ...
+    }
+}
+```
