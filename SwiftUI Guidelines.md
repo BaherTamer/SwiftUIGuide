@@ -604,3 +604,47 @@ struct ContentView: View {
 }
 ```
 
+<br>
+
+---
+
+<br>
+
+### 🌟 Avoid Expensive Computations Inside The View Body
+
+**Why?**
+> If a property is computed directly inside a view’s body, it can make the view expensive to evaluate. SwiftUI recomputes the body frequently, so heavy calculations inside it can cause slow UI updates, stuttering animations, and poor performance. Instead, precompute values outside the body using computed properties.
+
+**Apple's SwiftUI Team Says:**
+> Avoid inline filtering: `ForEach(dogs.filter(…))`. The inline filter here is linear over the collection. This might work in a prototype, but when the collection scales, this operation can quickly become expensive, leading to a slow update. It's better to move it out to the model.
+
+**Apple's SwiftUI Team Says:**
+> Common sources of slow updates:
+> 1. Expensive view body: a dynamic property could be computed from a view’s body, making the view expensive to evaluate.
+> 2. Make sure to check for expensive string interpolation or operations like data filtering and other work inside of body.
+
+``` swift
+// Avoid
+struct ContentView: View {
+    var body: some View {
+        List(allItems.filter({$0.isActive})) { item in
+            ...
+        }
+    }
+}
+```
+
+``` swift
+// Use
+struct ContentView: View {
+    private var filteredItems: [Item] {
+        allItems.filter({$0.isActive}))
+    }
+
+    var body: some View {
+        List(filteredItems) { item in
+            ...
+        }
+    }
+}
+```
