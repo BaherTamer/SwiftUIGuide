@@ -531,7 +531,42 @@ ScrollView {
 }
 ```
 
+<br>
 
+---
+
+<br>
+
+### 🌟 Prefer Modifying View Properties Instead of Splitting Views With `if-else`
+
+**Why?**
+> In SwiftUI, an `if-else` statement creates two separate view identities behind the scenes. This can cause unnecessary view invalidation, animation glitches, and state resets when toggling between the conditions. Instead, it’s better to modify view properties based on the condition while keeping the same view identity. SwiftUI can then differentiate and update the view efficiently.
+
+**Apple's SwiftUI Team Says:**
+> If else statement and inert modifier are forms of structure identity. However, From SwiftUI point of view, the `if-else` statement represents two different views with distinct identities. To make those views the same identity, we’d need to apply the condition in other ways, for example via an inert view modifier. Both of these strategies can work, but SwiftUI generally recommends the second approach. By default, try to preserve identity and provide more fluid transitions: this also helps preserve your view’s lifetime and state.
+
+``` swift
+// Avoid
+if condition {
+    contentView
+        .foregroundStyle(.green)
+        .frame(maxHeight: .infinity, alignment: .top)
+} else {
+    contentView
+        .foregroundStyle(.red)
+        .frame(maxHeight: .infinity, alignment: .bottom)
+}
+```
+
+``` swift
+// Use
+contentView
+    .foregroundStyle(condition ? .green : .red)
+    .frame(
+        maxHeight: .infinity,
+        alignment: condition ? .top : .bottom
+    )
+```
 
 
 
