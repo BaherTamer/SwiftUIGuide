@@ -1,4 +1,70 @@
 # SwiftUI Guidelines:
+SwiftUI is a powerful declarative framework, but writing efficient, maintainable, and performant code requires following best practices. This document provides guidelines to help you:
+1. Improve code readability & maintainability
+2. Enhance performance & reduce unnecessary re-renders
+3. Follow Apple’s recommended SwiftUI patterns
+4. Avoid common pitfalls that lead to bugs or sluggish UIs
+
+These guidelines are based on Apple’s official SwiftUI team recommendations and real-world experience.
+
+<br>
+
+## Table of Contents
+**Core SwiftUI Components & Best Practices**
+* Use `Label` Instead of `HStack` for Icon + Text Combinations
+* Use `LabeledContent` Instead of `HStack` for Label + Value Layouts
+* Use `LocalizedStringKey` for Reusable Components
+* Use `verbatim` Parameter for Non-Localized `Text`
+* Use `ImageResource` Instead of `String` for Image Names
+* Use `ColorResource` Instead of `String` for Colors
+* Use `Text` `format` Parameter for Consistent Formatting
+
+<br>
+
+**View Composition & Structure**
+* Avoid Using Outer Padding for Reusable Components
+* Follow Consistent Naming Conventions for SwiftUI Views
+* When to Encapsulate a Component into Its Own `View` Struct?
+* Avoid Using `AnyView` — Prefer `@ViewBuilder`
+* Use Lazy Stacks for Scrollable Content
+
+<br>
+
+**State Management & Data Flow**
+* How to Choose Property Keywords for Your `View`?
+* Eliminate Unnecessary `View` Dependencies
+
+<br>
+
+**Performance Optimization**
+* Avoid Expensive Computations Inside the View Body
+* Prefer Modifying View Properties Over `if-else` Splits
+* Use if Statements to Add or Remove Views Dynamically
+* Avoid if Conditions Inside `ForEach`
+* Dynamic Data in `ForEach` Must Be `Hashable`
+* Use Stable & Unique Identifiers for `ForEach`
+* Don’t Instantiate State Properties
+* Use `.task` for Long-Running Work in `ObservableObject`
+
+<br>
+
+**Code Clarity & Maintainability**
+* Prefer Explicit Parameters Over Trailing Closures for Callbacks
+* Prefer Passing Function Names Instead of Closures
+* Use Custom Modifiers Only When Necessary
+
+<br>
+
+###### Made with 💙 by Baher Tamer
+
+<br>
+
+---
+
+<br>
+
+
+
 
 ### 💠 Use `Label` Instead of `HStack` for Icon + Text Combinations
 
