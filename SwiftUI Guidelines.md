@@ -429,6 +429,9 @@ AppPicker()
 **Apple's SwiftUI Team Says:**
 > **A general principle of SwiftUI:** Which is to prefer smaller, single-purpose views, because these kinds of simpler views are easier to understand and also easier to maintain over time. The entire SwiftUI framework is oriented around composition of small pieces and you should organize your code in the same way.
 
+**Apple's SwiftUI Team Says:**
+> You should never hesitate to re-factor your SwiftUI code because extracting a subview has virtually no runtime overhead.
+
 <br>
 
 **1️⃣ When It Contains Complex Logic**
