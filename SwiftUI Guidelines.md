@@ -57,16 +57,15 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 ###### Made with 💙 by Baher Tamer
 
-<br>
-
 ---
 
 <br>
 
+## Core SwiftUI Components & Best Practices
 
+<br>
 
-
-### 💠 Use `Label` Instead of `HStack` for Icon + Text Combinations
+### 🔹 Use `Label` Instead of `HStack` for Icon + Text Combinations
 
 **Why?**
 > `Label` is a semantic, built-in SwiftUI component specifically designed for pairing an icon with text. It improves accessibility, reduces boilerplate, and adapts better to dynamic type, right-to-left languages, and other system-driven layout changes.
@@ -102,7 +101,7 @@ private func circleIcon() -> some View {
 
 <br>
 
-### 💠 Use `LabeledContent` Instead of `HStack` for Label + Value Layouts
+### 🔹 Use `LabeledContent` Instead of `HStack` for Label + Value Layouts
 
 **Why?**
 > `LabeledContent` is a purpose-built SwiftUI view for showing a label and a value. It improves consistency, accessibility, dynamic type handling, and aligns better with system styles, especially in forms and settings screens.
@@ -137,6 +136,172 @@ private func amountText() -> some View {
 ---
 
 <br>
+
+### 🔹 Use `LocalizedStringKey` for Reusable Components
+
+**Why?**
+> Using `LocalizedStringKey` ensures that your custom SwiftUI views support localization seamlessly. This enables the use of localized strings without extra manual effort.
+
+``` swift
+// Avoid
+struct ReusableView: View {
+    let title: String
+
+    var body: some View {
+        // Content
+    }
+}
+```
+
+``` swift
+// Use
+struct ReusableView: View {
+    let title: LocalizedStringKey
+
+    var body: some View {
+        // Content
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### 🔹 Use `verbatim` Parameter for Non-Localized `Text`
+
+**Why?**
+> The `verbatim` parameter should be used when you need to display a non-localized string. By default, `Text` uses `LocalizedStringKey`, which is designed for localized strings. Using `verbatim` ensures that your string is treated as raw text and not mistakenly processed for localization and displayed in `Localizable` table.
+
+``` swift
+// Avoid
+Text("\(product.title) - \(product.price)")
+```
+
+``` swift
+// Use
+Text(verbatim: "\(product.title) - \(product.price)")
+```
+
+<br>
+
+---
+
+<br>
+
+### 🔹 Use `ImageResource` Instead of `String` for Image Names
+
+**Why?**
+> Using `ImageResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with images.
+
+``` swift
+// Avoid
+Image("circle.fill")
+```
+
+``` swift
+// Use
+Image(.circleFill)
+```
+
+<br>
+
+---
+
+<br>
+
+### 🔹 Use `ColorResource` Instead of `String` for Colors
+
+**Why?**
+> Using `ColorResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with colors.
+
+``` swift
+// Avoid
+Color("blue.light")
+```
+
+``` swift
+// Use
+Color(.blueLight)
+```
+
+<br>
+
+---
+
+<br>
+
+### 🔹 Use `Text` `format` Parameter for Consistent Formatting
+
+**Why?**
+> Using the `format` parameter with `Text` allows you to leverage Swift’s built-in formatting capabilities, ensuring consistent, locale-aware formatting and reducing the need for custom logic or string interpolation. It improves code clarity, maintainability, and ensures the proper handling of various data types like numbers, dates, and currencies.
+
+**Tip:**
+> When fetching date strings from a backend, convert the `String` to a `Date` in your model.
+
+**Resource:**
+> Check this website for all [SwiftUI Format Styles](https://goshdarnformatstyle.com/) in details and TONS of examples.
+
+``` swift
+// Avoid
+Text("\(12)%")
+Text("\(500) EGP")
+Text("\(dateFormatter.string(from: someDate))")
+```
+
+``` swift
+// Use
+Text(12, format: .percent) // 12%
+Text(500, format: .currency(code: "egp")) // EGP 500
+Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
+```
+
+<br>
+
+---
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+---
+
+<br>
+
+<br>
+
+---
+
+<br>
+
+<br>
+
+---
+
+<br>
+
 
 ### 💠 Prefer Explicit Parameters Over Trailing Closures for Callbacks
 
@@ -249,132 +414,7 @@ struct ParentView: View {
 
 <br>
 
-### 💠 Use `LocalizedStringKey` as the Input Type for Reusable Components
 
-**Why?**
-> Using `LocalizedStringKey` ensures that your custom SwiftUI views support localization seamlessly. This enables the use of localized strings without extra manual effort.
-
-``` swift
-// Avoid
-struct ReusableView: View {
-    let title: String
-
-    var body: some View {
-        // Content
-    }
-}
-```
-
-``` swift
-// Use
-struct ReusableView: View {
-    let title: LocalizedStringKey
-
-    var body: some View {
-        // Content
-    }
-}
-```
-
-<br>
-
----
-
-<br>
-
-### 💠 Use `verbatim` Parameter for `Text` When Displaying Non-Localized Strings
-
-**Why?**
-> The `verbatim` parameter should be used when you need to display a non-localized string. By default, `Text` uses `LocalizedStringKey`, which is designed for localized strings. Using `verbatim` ensures that your string is treated as raw text and not mistakenly processed for localization and displayed in `Localizable` table.
-
-``` swift
-// Avoid
-Text("\(product.title) - \(product.price)")
-```
-
-``` swift
-// Use
-Text(verbatim: "\(product.title) - \(product.price)")
-```
-
-<br>
-
----
-
-<br>
-
-### 💠 Use `ImageResource` Instead of `String` for Image Names
-
-**Why?**
-> Using `ImageResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with images.
-
-``` swift
-// Avoid
-Image("circle.fill")
-```
-
-``` swift
-// Use
-Image(.circleFill)
-```
-
-<br>
-
----
-
-<br>
-
-### 💠 Use `ColorResource` Instead of `String` for Colors
-
-**Why?**
-> Using `ColorResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with colors.
-
-``` swift
-// Avoid
-Color("blue.light")
-```
-
-``` swift
-// Use
-Color(.blueLight)
-```
-
-<br>
-
----
-
-<br>
-
-### 💠 Use `Text` `format` Parameter Instead of String Interpolation or Custom Formatters
-
-**Why?**
-> Using the `format` parameter with `Text` allows you to leverage Swift’s built-in formatting capabilities, ensuring consistent, locale-aware formatting and reducing the need for custom logic or string interpolation. It improves code clarity, maintainability, and ensures the proper handling of various data types like numbers, dates, and currencies.
-
-**Tip:**
-> When fetching date strings from a backend, convert the `String` to a `Date` in your model.
-
-**Resource:**
-> Check this website for all [SwiftUI Format Styles](https://goshdarnformatstyle.com/) in details and TONS of examples.
-
-``` swift
-// Avoid
-Text("\(12)%")
-Text("\(500) EGP")
-Text("\(dateFormatter.string(from: someDate))")
-```
-
-``` swift
-// Use
-Text(12, format: .percent) // 12%
-Text(500, format: .currency(code: "egp")) // EGP 500
-Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
-```
-
-<br>
-
----
-
-<br>
 
 ### 💠 Use Custom Modifiers Only When Necessary — Otherwise, Use `View` Extensions
 
