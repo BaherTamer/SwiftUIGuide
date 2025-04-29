@@ -729,3 +729,50 @@ struct ContentView: View {
     }
 }
 ```
+
+<br>
+
+---
+
+<br>
+
+### 🌟 Dynamic Data Must Be Hashable, in `ForEach`
+
+**Why?**
+> SwiftUI relies on each item’s hash value to assign a unique identity. This allows SwiftUI to efficiently detect changes and update only the necessary views instead of rebuilding the entire hierarchy.
+
+**Apple's SwiftUI Team Says:**
+> Any dynamic collection of data used in `ForEach` this property must be hashable because SwiftUI is going to use its value to assign an identity to all the views generated from the elements of the collection.
+
+``` swift
+// Use
+struct User: Hashable {
+    let id: String
+    let name: String
+}
+
+ForEach(users, id: \.id) { user in
+    ...
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### 🌟 Use Stable & Unique Identifiers for `ForEach`
+
+**Why?**
+> When using `ForEach`, you must provide a stable (not changing) and unique identifier for each element. This helps SwiftUI track view identity correctly. Avoid using `.self` or iterating over indices, as these often lead to unstable or duplicate Ids.
+
+**Apple's SwiftUI Team Says:**
+> Use stable unique identifiers for items in a collection to be used as id in `ForEach`. This ensures that animations look great, performance is smooth, and the dependencies of your hierarchy are reflected in the most efficient form.
+
+``` swift
+// Use
+ForEach(users, id: \.email) { user in
+    ...
+}
+```
