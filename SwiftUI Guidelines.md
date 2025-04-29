@@ -771,6 +771,17 @@ ForEach(users, id: \.id) { user in
 > Use stable unique identifiers for items in a collection to be used as id in `ForEach`. This ensures that animations look great, performance is smooth, and the dependencies of your hierarchy are reflected in the most efficient form.
 
 ``` swift
+// Avoid
+ForEach(users, id: \.self) { user in
+    ...
+}
+
+ForEach(items.indices) { index in
+    ...
+}
+```
+
+``` swift
 // Use
 ForEach(users, id: \.email) { user in
     ...
