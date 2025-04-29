@@ -9,7 +9,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 <br>
 
-## Table of Contents
+# Table of Contents
 **Core SwiftUI Components & Best Practices**
 * Use `Label` Instead of `HStack` for Icon + Text Combinations
 * Use `LabeledContent` Instead of `HStack` for Label + Value Layouts
@@ -25,8 +25,6 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * Avoid Using Outer Padding for Reusable Components
 * Follow Consistent Naming Conventions for SwiftUI Views
 * When to Encapsulate a Component into Its Own `View` Struct?
-* Avoid Using `AnyView` — Prefer `@ViewBuilder`
-* Use Lazy Stacks for Scrollable Content
 
 <br>
 
@@ -37,6 +35,8 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 <br>
 
 **Performance Optimization**
+* Avoid Using `AnyView` — Prefer `@ViewBuilder`
+* Use Lazy Stacks for Scrollable Content
 * Avoid Expensive Computations Inside the View Body
 * Prefer Modifying View Properties Over `if-else` Splits
 * Use if Statements to Add or Remove Views Dynamically
@@ -61,11 +61,11 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 <br>
 
-## Core SwiftUI Components & Best Practices
+<!---------------------------------------------------------------------------------------------------------------------------->
 
-<br>
+# 💠 Core SwiftUI Components & Best Practices
 
-### 🔹 Use `Label` Instead of `HStack` for Icon + Text Combinations
+### Use `Label` Instead of `HStack` for Icon + Text Combinations
 
 **Why?**
 > `Label` is a semantic, built-in SwiftUI component specifically designed for pairing an icon with text. It improves accessibility, reduces boilerplate, and adapts better to dynamic type, right-to-left languages, and other system-driven layout changes.
@@ -101,7 +101,7 @@ private func circleIcon() -> some View {
 
 <br>
 
-### 🔹 Use `LabeledContent` Instead of `HStack` for Label + Value Layouts
+### Use `LabeledContent` Instead of `HStack` for Label + Value Layouts
 
 **Why?**
 > `LabeledContent` is a purpose-built SwiftUI view for showing a label and a value. It improves consistency, accessibility, dynamic type handling, and aligns better with system styles, especially in forms and settings screens.
@@ -137,7 +137,7 @@ private func amountText() -> some View {
 
 <br>
 
-### 🔹 Use `LocalizedStringKey` for Reusable Components
+### Use `LocalizedStringKey` for Reusable Components
 
 **Why?**
 > Using `LocalizedStringKey` ensures that your custom SwiftUI views support localization seamlessly. This enables the use of localized strings without extra manual effort.
@@ -170,7 +170,7 @@ struct ReusableView: View {
 
 <br>
 
-### 🔹 Use `verbatim` Parameter for Non-Localized `Text`
+### Use `verbatim` Parameter for Non-Localized `Text`
 
 **Why?**
 > The `verbatim` parameter should be used when you need to display a non-localized string. By default, `Text` uses `LocalizedStringKey`, which is designed for localized strings. Using `verbatim` ensures that your string is treated as raw text and not mistakenly processed for localization and displayed in `Localizable` table.
@@ -191,7 +191,7 @@ Text(verbatim: "\(product.title) - \(product.price)")
 
 <br>
 
-### 🔹 Use `ImageResource` Instead of `String` for Image Names
+### Use `ImageResource` Instead of `String` for Image Names
 
 **Why?**
 > Using `ImageResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with images.
@@ -212,7 +212,7 @@ Image(.circleFill)
 
 <br>
 
-### 🔹 Use `ColorResource` Instead of `String` for Colors
+### Use `ColorResource` Instead of `String` for Colors
 
 **Why?**
 > Using `ColorResource` ensures type safety, avoids typos, and leverages Swift’s compiler checks to catch errors early. This improves maintainability, readability, and prevents runtime errors when working with colors.
@@ -233,7 +233,7 @@ Color(.blueLight)
 
 <br>
 
-### 🔹 Use `Text` `format` Parameter for Consistent Formatting
+### Use `Text` `format` Parameter for Consistent Formatting
 
 **Why?**
 > Using the `format` parameter with `Text` allows you to leverage Swift’s built-in formatting capabilities, ensuring consistent, locale-aware formatting and reducing the need for custom logic or string interpolation. It improves code clarity, maintainability, and ensures the proper handling of various data types like numbers, dates, and currencies.
@@ -258,11 +258,213 @@ Text(500, format: .currency(code: "egp")) // EGP 500
 Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
 ```
 
+---
+
+<br>
+
+<!---------------------------------------------------------------------------------------------------------------------------->
+
+# 💠 View Composition & Structure
+
+### Avoid Using Outer Padding for Reusable Components
+
+**Why?**
+> Reusable components should focus only on their internal layout and content, not their external spacing. This keeps components flexible and adaptable to different contexts and gives the parent view full control over padding and layout.
+
+``` swift
+// Avoid
+struct ReusableView: View {
+    var body: some View {
+        VStack {
+            // Content
+        }
+        // Modifiers
+        .padding(.horizontal, 25)
+    }
+}
+
+struct ParentView: View {
+    var body: some View {
+        ReusableView()
+    }
+}
+```
+
+``` swift
+// Use
+struct ReusableView: View {
+    var body: some View {
+        VStack {
+            // Content
+        }
+        // Modifiers
+    }
+}
+
+struct ParentView: View {
+    var body: some View {
+        ReusableView()
+            .padding(.horizontal, 25)
+    }
+}
+```
+
 <br>
 
 ---
 
 <br>
+
+### Follow Consistent Naming Conventions for SwiftUI Views
+
+**Why?**
+> Using consistent naming conventions for SwiftUI views helps maintain clarity, improves code readability, and makes it easier to identify the purpose of a view at a glance. These naming rules allow developers to quickly differentiate between screens, reusable views, and smaller UI components.
+
+<br>
+
+1️⃣ When creating a SwiftUI screen (a top-level view that represents a full screen), use the `Screen` suffix to clearly indicate its role.
+
+``` swift
+// Avoid
+OrderDetailsView()
+CartView()
+```
+
+``` swift
+// Use
+OrderDetailsScreen()
+CartScreen()
+```
+
+<br>
+
+2️⃣ When creating a general reusable views that are not full screens but still serve as major components, use the `View` suffix.
+
+``` swift
+// Use
+ProductCardView()
+BannerView()
+```
+
+<br>
+
+3️⃣ When creating a small, reusable UI components (such as buttons, labels, tags, and sections), omit the View suffix to keep the name clean and concise.
+
+``` swift
+// Avoid
+UnderlinedButtonView()
+SectionHeaderView()
+```
+
+``` swift
+// Use
+UnderlinedButton()
+SectionHeader()
+```
+
+<br>
+
+4️⃣ When creating small reusable components with names similar to built-in SwiftUI views (e.g., Slider, Picker), use the App prefix to distinguish your custom components from SwiftUI’s built-in ones.
+
+``` swift
+// Use
+AppSlider()
+AppPicker()
+```
+
+<br>
+
+---
+
+<br>
+
+### When to Encapsulate a Component into Its Own `View` Struct?
+
+**Why?**
+> Encapsulating components into their own View structs improves code organization, readability, maintainability, and reusability.
+
+**Apple's SwiftUI Team Says:**
+> Since views are declarative descriptions, splitting a view into multiple smaller views does not impact performance, allowing developers to organize their code without compromising efficiency.
+
+**Apple's SwiftUI Team Says:**
+> **A general principle of SwiftUI:** Which is to prefer smaller, single-purpose views, because these kinds of simpler views are easier to understand and also easier to maintain over time. The entire SwiftUI framework is oriented around composition of small pieces and you should organize your code in the same way.
+
+**Apple's SwiftUI Team Says:**
+> You should never hesitate to re-factor your SwiftUI code because extracting a subview has virtually no runtime overhead.
+
+<br>
+
+**1️⃣ When It Contains Complex Logic**
+* If the view involves complex logic (such as multiple states, interactions, or calculations), encapsulating it into a separate View struct keeps your code cleaner and more modular.
+
+<br>
+
+**2️⃣ When the View Is Reusable**
+* Encapsulate views into their own structs when they need to be reused in multiple places. This improves maintainability and ensures consistency across your app.
+
+<br>
+
+**3️⃣ When the View Code Is Big**
+* If a view has a lot of code or multiple layers of nested views, it’s a good idea to encapsulate it. This makes the code easier to manage, debug, and maintain.
+
+<br>
+
+**4️⃣ When the View Needs to Handle Its Own State**
+* If a view has state management or complex interactions (e.g., sliders, or toggles with unique behaviors), it’s a good practice to encapsulate it. This ensures the view has full control over its internal state without affecting other views.
+
+<br>
+
+**5️⃣ When the View Has Its Own Business Logic**
+* If a view has its own small business logic (like fetching data, or reacting to local changes), it should encapsulate that logic inside itself rather than pushing it up to the parent view. This keeps the parent view simpler and the logic closely tied to the UI it affects.
+
+<br>
+
+**6️⃣ When You Need to Handle Animation or Transitions**
+* For views that handle animations or complex transitions, encapsulating them helps organize animation logic separately, making it easier to tweak or reuse.
+
+<br>
+
+**7️⃣ When You Need to Apply Specific Modifiers to a View**
+* If a view requires several specific modifiers (such as padding, background, or cornerRadius), encapsulating the view ensures that all the necessary modifiers are applied in a clean and reusable way.
+
+<br>
+
+---
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -365,54 +567,7 @@ private func stateDidChange(_ oldValue: Int, newValue: Int) {}
 
 <br>
 
-### 💠 Avoid Using Outer Padding for Reusable Components
 
-**Why?**
-> Reusable components should focus only on their internal layout and content, not their external spacing. This keeps components flexible and adaptable to different contexts and gives the parent view full control over padding and layout.
-
-``` swift
-// Avoid
-struct ReusableView: View {
-    var body: some View {
-        VStack {
-            // Content
-        }
-        // Modifiers
-        .padding(.horizontal, 25)
-    }
-}
-
-struct ParentView: View {
-    var body: some View {
-        ReusableView()
-    }
-}
-```
-
-``` swift
-// Use
-struct ReusableView: View {
-    var body: some View {
-        VStack {
-            // Content
-        }
-        // Modifiers
-    }
-}
-
-struct ParentView: View {
-    var body: some View {
-        ReusableView()
-            .padding(.horizontal, 25)
-    }
-}
-```
-
-<br>
-
----
-
-<br>
 
 
 
@@ -461,123 +616,7 @@ struct ColorBackgroundModifier: ViewModifier {
 
 <br>
 
-### 💠 Follow Consistent Naming Conventions for SwiftUI Views
 
-**Why?**
-> Using consistent naming conventions for SwiftUI views helps maintain clarity, improves code readability, and makes it easier to identify the purpose of a view at a glance. These naming rules allow developers to quickly differentiate between screens, reusable views, and smaller UI components.
-
-<br>
-
-1️⃣ When creating a SwiftUI screen (a top-level view that represents a full screen), use the `Screen` suffix to clearly indicate its role.
-
-``` swift
-// Avoid
-OrderDetailsView()
-CartView()
-```
-
-``` swift
-// Use
-OrderDetailsScreen()
-CartScreen()
-```
-
-<br>
-
-2️⃣ When creating a general reusable views that are not full screens but still serve as major components, use the `View` suffix.
-
-``` swift
-// Use
-ProductCardView()
-BannerView()
-```
-
-<br>
-
-3️⃣ When creating a small, reusable UI components (such as buttons, labels, tags, and sections), omit the View suffix to keep the name clean and concise.
-
-``` swift
-// Avoid
-UnderlinedButtonView()
-SectionHeaderView()
-```
-
-``` swift
-// Use
-UnderlinedButton()
-SectionHeader()
-```
-
-<br>
-
-4️⃣ When creating small reusable components with names similar to built-in SwiftUI views (e.g., Slider, Picker), use the App prefix to distinguish your custom components from SwiftUI’s built-in ones.
-
-``` swift
-// Use
-AppSlider()
-AppPicker()
-```
-
-<br>
-
----
-
-<br>
-
-### 💠 When to Encapsulate a Component into Its Own `View` Struct?
-
-**Why?**
-> Encapsulating components into their own View structs improves code organization, readability, maintainability, and reusability.
-
-**Apple's SwiftUI Team Says:**
-> Since views are declarative descriptions, splitting a view into multiple smaller views does not impact performance, allowing developers to organize their code without compromising efficiency.
-
-**Apple's SwiftUI Team Says:**
-> **A general principle of SwiftUI:** Which is to prefer smaller, single-purpose views, because these kinds of simpler views are easier to understand and also easier to maintain over time. The entire SwiftUI framework is oriented around composition of small pieces and you should organize your code in the same way.
-
-**Apple's SwiftUI Team Says:**
-> You should never hesitate to re-factor your SwiftUI code because extracting a subview has virtually no runtime overhead.
-
-<br>
-
-**1️⃣ When It Contains Complex Logic**
-* If the view involves complex logic (such as multiple states, interactions, or calculations), encapsulating it into a separate View struct keeps your code cleaner and more modular.
-
-<br>
-
-**2️⃣ When the View Is Reusable**
-* Encapsulate views into their own structs when they need to be reused in multiple places. This improves maintainability and ensures consistency across your app.
-
-<br>
-
-**3️⃣ When the View Code Is Big**
-* If a view has a lot of code or multiple layers of nested views, it’s a good idea to encapsulate it. This makes the code easier to manage, debug, and maintain.
-
-<br>
-
-**4️⃣ When the View Needs to Handle Its Own State**
-* If a view has state management or complex interactions (e.g., sliders, or toggles with unique behaviors), it’s a good practice to encapsulate it. This ensures the view has full control over its internal state without affecting other views.
-
-<br>
-
-**5️⃣ When the View Has Its Own Business Logic**
-* If a view has its own small business logic (like fetching data, or reacting to local changes), it should encapsulate that logic inside itself rather than pushing it up to the parent view. This keeps the parent view simpler and the logic closely tied to the UI it affects.
-
-<br>
-
-**6️⃣ When You Need to Handle Animation or Transitions**
-* For views that handle animations or complex transitions, encapsulating them helps organize animation logic separately, making it easier to tweak or reuse.
-
-<br>
-
-**7️⃣ When You Need to Apply Specific Modifiers to a View**
-* If a view requires several specific modifiers (such as padding, background, or cornerRadius), encapsulating the view ensures that all the necessary modifiers are applied in a clean and reusable way.
-
-<br>
-
----
-
-<br>
 
 ### 🌟 Avoid Using `AnyView` — Prefer `@ViewBuilder` When Needed
 
