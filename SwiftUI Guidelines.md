@@ -426,6 +426,9 @@ AppPicker()
 **Apple's SwiftUI Team Says:**
 > Since views are declarative descriptions, splitting a view into multiple smaller views does not impact performance, allowing developers to organize their code without compromising efficiency.
 
+**Apple's SwiftUI Team Says:**
+> **A general principle of SwiftUI:** Which is to prefer smaller, single-purpose views, because these kinds of simpler views are easier to understand and also easier to maintain over time. The entire SwiftUI framework is oriented around composition of small pieces and you should organize your code in the same way.
+
 <br>
 
 **1️⃣ When It Contains Complex Logic**
