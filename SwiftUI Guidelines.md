@@ -548,6 +548,9 @@ ScrollView {
 **Apple's SwiftUI Team Says:**
 > If else statement and inert modifier are forms of structure identity. However, From SwiftUI point of view, the `if-else` statement represents two different views with distinct identities. To make those views the same identity, we’d need to apply the condition in other ways, for example via an inert view modifier. Both of these strategies can work, but SwiftUI generally recommends the second approach. By default, try to preserve identity and provide more fluid transitions: this also helps preserve your view’s lifetime and state.
 
+**Apple's SwiftUI Team Says:**
+> You should try to push your conditions into your modifiers as much as possible. Because that will help SwiftUI detect those changes and give you better animations. That if statement syntax really great if your intention is to actually add or remove views from your hierarchy. 
+
 ``` swift
 // Avoid
 if condition {
@@ -569,6 +572,32 @@ contentView
         maxHeight: .infinity,
         alignment: condition ? .top : .bottom
     )
+```
+
+<br>
+
+---
+
+<br>
+
+### 💠 Use if Statements to Add or Remove Views Dynamically
+
+**Why?**
+> Using an if statement to conditionally add or remove views creates a clear and stable view hierarchy that SwiftUI can easily manage and optimize. It’s better than hiding views with `opacity` or setting them empty manually using `EmptyView`.
+
+**Tip:**
+> To create smooth animations, combine the if condition with `animation` or `transition` modifiers.
+
+``` swift
+// Use
+@ViewBuilder
+func saleTag(_ value: Int?) -> some View {
+    if let value {
+        // Content
+            .transition(...)
+            .animation(...)
+    }
+}
 ```
 
 <br>
