@@ -847,3 +847,104 @@ ForEach(users, id: \.email) { user in
 
 **Apple's SwiftUI Team Says:**
 > One of the great uses of `State` that we have in our framework is `Button`. `Button` uses `State` to track whether the user is pressing on it and highlight appropriately. And what's great about using `State` for `Button` is that when you create a `Button`, you don't need to care about the highlight state. That is data that is truly owned by the `Button`. So when you're reaching for `State`, consider do I have a case that's like `Button`? And if you do, `State` might be a great tool. But if not, consider using one of the other powerful tools for using data in SwiftUI.
+
+<br>
+
+---
+
+<br>
+
+### 💠 Eliminate Unnecessary `View` Dependencies
+
+**Why?**
+> Passing entire models or complex data structures into child views make components harder to be predictable, testable, and easier to reuse. Instead, pass only the data the child view actually needs.
+
+``` swift
+// Avoid
+struct ProductCard: View {
+    let product: Product
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(product.barCode)
+            Text(product.title)
+        }
+    }
+}
+```
+
+``` swift
+// Use
+struct ProductCard: View {
+    let title: String
+    let barcode: String
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(barCode)
+            Text(title)
+        }
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### 🌟 Use `.task` for Long-Running Work in `ObservableObject`
+
+**Why?**
+> Running long operations during initialization or synchronously inside a model can block the main thread, causing slow updates, blank screens, or UI delays.
+
+**Apple's SwiftUI Team Says:**
+> **Common sources of slow updates:** Not using `.task` modifier for a function that takes long time in `observableObject`.
+
+``` swift
+// Avoid
+@MainActor
+final class ProductListVM: ObservableObject {
+    @Published var products: [Product] = []
+
+    init() {
+        loadProducts()
+    }
+
+    private func loadProducts() {
+        // Takes a long time
+    }
+}
+
+struct ProductListView: View {
+    @StateObject private var viewModel = ProductListVM()
+
+    var body: some View {
+        ProductsListView()
+    }
+}
+```
+
+``` swift
+// Use
+@MainActor
+final class ProductListVM: ObservableObject {
+    @Published var products: [Product] = []
+
+    func loadProducts() async {
+        // Takes a long time
+    }
+}
+
+struct ProductListView: View {
+    @StateObject private var viewModel = ProductListVM()
+
+    var body: some View {
+        ProductsListView()
+            .task {
+                await viewModel.loadProducts()
+            }
+    }
+}
+```
