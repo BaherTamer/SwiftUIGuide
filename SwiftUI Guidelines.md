@@ -71,6 +71,15 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 <br>
 
+# Tools
+
+| Title | Link | Description |
+| ----- | ---- | ----------- |
+| SwiftSafeUI | [GitHub Link](https://github.com/BaherTamer/SwiftSafeUI) [Documentation Link](bahertamer.github.io/SwiftSafeUI/) | Encapsulates SwiftUI deprecation handling logic. |
+| Inject | [GitHub Link](https://github.com/krzysztofzablocki/Inject) [Tutorial Link](https://www.youtube.com/watch?v=lbsXuCYTpkY&t=297s) | Hot Reloading for Swift applications |
+
+<br>
+
 ###### Made with 💙 by Baher Tamer
 
 ---
