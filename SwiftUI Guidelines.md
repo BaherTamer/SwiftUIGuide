@@ -55,6 +55,22 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 <br>
 
+# Resources
+
+| Title | Link |
+| ----- | ---- |
+| SwiftUI Essentials 2019 | [Video Link](https://developer.apple.com/videos/play/wwdc2019/216) |
+| Data Flow Through SwiftUI | [Video Link](https://developer.apple.com/videos/play/wwdc2019/226) |
+| Building Custom View with SwiftUI | [Video Link](https://developer.apple.com/videos/play/wwdc2019/237) |
+| Data Essentials in SwiftUI | [Video Link](https://developer.apple.com/videos/play/wwdc2020/10040) |
+| Introduction to SwiftUI | [Video Link](https://developer.apple.com/videos/play/wwdc2020/10119) |
+| Demystify SwiftUI | [Video Link](https://developer.apple.com/videos/play/wwdc2021/10022) |
+| The Craft of SwiftUI API Design: Progressive Disclosure | [Video Link](https://developer.apple.com/videos/play/wwdc2022/10059) |
+| Demystify SwiftUI Performance | [Video Link](https://developer.apple.com/videos/play/wwdc2023/10160) |
+| SwiftUI Essentials 2024 | [Video Link](https://developer.apple.com/videos/play/wwdc2024/10150) |
+
+<br>
+
 ###### Made with 💙 by Baher Tamer
 
 ---
