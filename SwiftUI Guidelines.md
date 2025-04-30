@@ -10,7 +10,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 <br>
 
 # Table of Contents
-[**Core SwiftUI Components & Best Practices**](#-core-swiftui-components--best-practices)
+**Core SwiftUI Components & Best Practices**
 * [Use `Label` Instead of `HStack` for Icon + Text Combinations](#use-label-instead-of-hstack-for-icon--text-combinations)
 * [Use `LabeledContent` Instead of `HStack` for Label + Value Layouts](#use-labeledcontent-instead-of-hstack-for-label--value-layouts)
 * [Use `LocalizedStringKey` for Reusable Components](#use-localizedstringkey-for-reusable-components)
@@ -21,20 +21,20 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 <br>
 
-[**View Composition & Structure**](#-view-composition--structure)
+**View Composition & Structure**
 * [Avoid Using Outer Padding for Reusable Components](#avoid-using-outer-padding-for-reusable-components)
 * [Follow Consistent Naming Conventions for SwiftUI Views](#follow-consistent-naming-conventions-for-swiftui-views)
 * [When to Encapsulate a Component into Its Own `View` Struct?](#when-to-encapsulate-a-component-into-its-own-view-struct)
 
 <br>
 
-[**State Management & Data Flow**](#-state-management--data-flow)
+**State Management & Data Flow**
 * [How to Choose Property Keywords for Your `View`?](#how-to-choose-property-keywords-for-your-view)
 * [Eliminate Unnecessary `View` Dependencies](#eliminate-unnecessary-view-dependencies)
 
 <br>
 
-[**Performance Optimization**](#-performance-optimization)
+**Performance Optimization**
 * Avoid Using `AnyView` — Prefer `@ViewBuilder`
 * Use Lazy Stacks for Scrollable Content
 * Avoid Expensive Computations Inside The View Body
