@@ -427,13 +427,113 @@ AppPicker()
 **7️⃣ When You Need to Apply Specific Modifiers to a View**
 * If a view requires several specific modifiers (such as padding, background, or cornerRadius), encapsulating the view ensures that all the necessary modifiers are applied in a clean and reusable way.
 
+---
+
+<br>
+
+<!---------------------------------------------------------------------------------------------------------------------------->
+
+# 💠 State Management & Data Flow
+
+### How to Choose Property Keywords for Your `View`?
+
+**Why?**
+> Choosing the right property wrapper (`let`, `var`, `@State`, `@Binding`, `ObservableObject`, etc.) ensures proper data flow, state management, and reusability in SwiftUI.
+
+<br>
+
+**1️⃣ Use `let` for Read-Only Data**
+* When the view only displays data and does not modify it.
+* Great for reusable components that receive static values.
+
+<br>
+
+**2️⃣ Use `@State` for View-Owned Mutable Data**
+* When the view owns and manages its own transient state (e.g., toggle state, text input).
+* Great for expandable toggles, text inputs, or button highlights.
+
+<br>
+
+**3️⃣ Use `@Binding` for Mutating Parent-Owned Values**
+* When the view needs to modify data owned by a parent view or external source.
+* Great for reusable components like switches or sliders.
+
+<br>
+
+**4️⃣ Use `ObservableObject` for External, Complex Data Models**
+* When the data is controlled outside SwiftUI and your view observes the changes.
+* Great for service or view model.
+* Use `@StateObject` when the view owns the data model and creates it.
+* Use `@ObservedObject` when the data model is created outside the view and the view observes the changes.
+
+<br>
+
+**5️⃣ Use `@EnvironmentObject` for Global or Deeply-Shared Models**
+* When you need to avoid manually passing models through multiple views.
+
+<br>
+
+**Apple's SwiftUI Team Says:**
+> When start on a new view in SwiftUI, there are three key questions to think about.
+> 1. What data does this view need to do its job?
+> 2. How will the view manipulate that data?
+> 3. Where will the data come from?
+
+<br>
+
+**Apple's SwiftUI Team Says:**
+> When you make your views into reusable components, you'll probably notice that most of the time when you're using data in your views, you probably don't need to mutate it. And so, read-only access is preferred when you can get away with that.
+
+<br>
+
+**Apple's SwiftUI Team Says:**
+> One of the great uses of `State` that we have in our framework is `Button`. `Button` uses `State` to track whether the user is pressing on it and highlight appropriately. And what's great about using `State` for `Button` is that when you create a `Button`, you don't need to care about the highlight state. That is data that is truly owned by the `Button`. So when you're reaching for `State`, consider do I have a case that's like `Button`? And if you do, `State` might be a great tool. But if not, consider using one of the other powerful tools for using data in SwiftUI.
+
 <br>
 
 ---
 
 <br>
 
+### Eliminate Unnecessary `View` Dependencies
 
+**Why?**
+> Passing entire models or complex data structures into child views make components harder to be predictable, testable, and easier to reuse. Instead, pass only the data the child view actually needs.
+
+``` swift
+// Avoid
+struct ProductCard: View {
+    let product: Product
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(product.barCode)
+            Text(product.title)
+        }
+    }
+}
+```
+
+``` swift
+// Use
+struct ProductCard: View {
+    let title: String
+    let barcode: String
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(barCode)
+            Text(title)
+        }
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
 
 
 
@@ -939,105 +1039,7 @@ ForEach(users, id: \.email) { user in
 
 <br>
 
-### 💠 How to Choose Property Keywords for Your `View`?
 
-**Why?**
-> Choosing the right property wrapper (`let`, `var`, `@State`, `@Binding`, `ObservableObject`, etc.) ensures proper data flow, state management, and reusability in SwiftUI.
-
-<br>
-
-**1️⃣ Use `let` for Read-Only Data**
-* When the view only displays data and does not modify it.
-* Great for reusable components that receive static values.
-
-<br>
-
-**2️⃣ Use `@State` for View-Owned Mutable Data**
-* When the view owns and manages its own transient state (e.g., toggle state, text input).
-* Great for expandable toggles, text inputs, or button highlights.
-
-<br>
-
-**3️⃣ Use `@Binding` for Mutating Parent-Owned Values**
-* When the view needs to modify data owned by a parent view or external source.
-* Great for reusable components like switches or sliders.
-
-<br>
-
-**4️⃣ Use `ObservableObject` for External, Complex Data Models**
-* When the data is controlled outside SwiftUI and your view observes the changes.
-* Great for service or view model.
-* Use `@StateObject` when the view owns the data model and creates it.
-* Use `@ObservedObject` when the data model is created outside the view and the view observes the changes.
-
-<br>
-
-**5️⃣ Use `@EnvironmentObject` for Global or Deeply-Shared Models**
-* When you need to avoid manually passing models through multiple views.
-
-<br>
-
-**Apple's SwiftUI Team Says:**
-> When start on a new view in SwiftUI, there are three key questions to think about.
-> 1. What data does this view need to do its job?
-> 2. How will the view manipulate that data?
-> 3. Where will the data come from?
-
-<br>
-
-**Apple's SwiftUI Team Says:**
-> When you make your views into reusable components, you'll probably notice that most of the time when you're using data in your views, you probably don't need to mutate it. And so, read-only access is preferred when you can get away with that.
-
-<br>
-
-**Apple's SwiftUI Team Says:**
-> One of the great uses of `State` that we have in our framework is `Button`. `Button` uses `State` to track whether the user is pressing on it and highlight appropriately. And what's great about using `State` for `Button` is that when you create a `Button`, you don't need to care about the highlight state. That is data that is truly owned by the `Button`. So when you're reaching for `State`, consider do I have a case that's like `Button`? And if you do, `State` might be a great tool. But if not, consider using one of the other powerful tools for using data in SwiftUI.
-
-<br>
-
----
-
-<br>
-
-### 💠 Eliminate Unnecessary `View` Dependencies
-
-**Why?**
-> Passing entire models or complex data structures into child views make components harder to be predictable, testable, and easier to reuse. Instead, pass only the data the child view actually needs.
-
-``` swift
-// Avoid
-struct ProductCard: View {
-    let product: Product
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(product.barCode)
-            Text(product.title)
-        }
-    }
-}
-```
-
-``` swift
-// Use
-struct ProductCard: View {
-    let title: String
-    let barcode: String
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(barCode)
-            Text(title)
-        }
-    }
-}
-```
-
-<br>
-
----
-
-<br>
 
 ### 🌟 Use `.task` for Long-Running Work in `ObservableObject`
 
