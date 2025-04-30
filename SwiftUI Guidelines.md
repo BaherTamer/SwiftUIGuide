@@ -68,6 +68,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 | The Craft of SwiftUI API Design: Progressive Disclosure | [Video Link](https://developer.apple.com/videos/play/wwdc2022/10059) |
 | Demystify SwiftUI Performance | [Video Link](https://developer.apple.com/videos/play/wwdc2023/10160) |
 | SwiftUI Essentials 2024 | [Video Link](https://developer.apple.com/videos/play/wwdc2024/10150) |
+| Don't Use Escaping Closures in SwiftUI | [Article Link](https://rensbr.eu/blog/swiftui-escaping-closures/) |
 
 <br>
 
@@ -75,8 +76,9 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 | Title | Link | Description |
 | ----- | ---- | ----------- |
-| SwiftSafeUI | [GitHub Link](https://github.com/BaherTamer/SwiftSafeUI) [Documentation Link](bahertamer.github.io/SwiftSafeUI/) | Encapsulates SwiftUI deprecation handling logic. |
-| Inject | [GitHub Link](https://github.com/krzysztofzablocki/Inject) [Tutorial Link](https://www.youtube.com/watch?v=lbsXuCYTpkY&t=297s) | Hot Reloading for Swift applications |
+| Format Styles | [Website Link](https://goshdarnformatstyle.com) | All SwiftUI format styles with examples |
+| SwiftSafeUI | [GitHub Link](https://github.com/BaherTamer/SwiftSafeUI) - [Documentation Link](bahertamer.github.io/SwiftSafeUI/) | Encapsulates SwiftUI deprecation handling logic. |
+| Inject | [GitHub Link](https://github.com/krzysztofzablocki/Inject) - [Tutorial Link](https://www.youtube.com/watch?v=lbsXuCYTpkY&t=297s) | Hot Reloading for Swift applications |
 
 <br>
 
