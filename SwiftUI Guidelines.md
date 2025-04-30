@@ -35,23 +35,23 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 <br>
 
 **Performance Optimization**
-* Avoid Using `AnyView` — Prefer `@ViewBuilder`
-* Use Lazy Stacks for Scrollable Content
-* Avoid Expensive Computations Inside The View Body
-* Prefer Modifying View Properties Over `if-else` Splits
-* Use if Statements to Add or Remove Views Dynamically
-* Avoid if Conditions Inside `ForEach`
-* Dynamic Data in `ForEach` Must Be `Hashable`
-* Use Stable & Unique Identifiers for `ForEach`
-* Don’t Instantiate State Properties
-* Use `.task` for Long-Running Work in `ObservableObject`
+* [Avoid Using `AnyView` — Prefer `@ViewBuilder`](#avoid-using-anyview--prefer-viewbuilder)
+* [Use Lazy Stacks for Scrollable Content](#use-lazy-stacks-for-scrollable-content)
+* [Avoid Expensive Computations Inside The View Body](#avoid-expensive-computations-inside-the-view-body)
+* [Prefer Modifying View Properties Over `if-else` Splits](#prefer-modifying-view-properties-over-if-else-splits)
+* [Use if Statements to Add or Remove Views Dynamically](#use-if-statements-to-add-or-remove-views-dynamically)
+* [Avoid if Conditions Inside `ForEach`](#avoid-adding-if-conditions-inside-foreach)
+* [Dynamic Data in `ForEach` Must Be `Hashable`](#dynamic-data-in-foreach-must-be-hashable)
+* [Use Stable & Unique Identifiers for `ForEach`](#use-stable--unique-identifiers-for-foreach)
+* [Don’t Instantiate State Properties](#dont-instantiate-state-properties)
+* [Use `.task` for Long-Running Work in `ObservableObject`](#use-task-for-long-running-work-in-observableobject)
 
 <br>
 
 **Code Clarity & Maintainability**
-* Prefer Explicit Parameters Over Trailing Closures for Callbacks
-* Prefer Passing Function Names Instead of Closures
-* Use Custom Modifiers Only When Necessary
+* [Prefer Explicit Parameters Over Trailing Closures for Callbacks](#prefer-explicit-parameters-over-trailing-closures-for-callbacks)
+* [Prefer Passing Function Names Instead of Closures](#prefer-passing-function-names-instead-of-closures)
+* [Use Custom Modifiers Only When Necessary](#use-custom-modifiers-only-when-necessary)
 
 <br>
 
