@@ -65,6 +65,8 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 # 💠 Core SwiftUI Components & Best Practices
 
+<br>
+
 ### Use `Label` Instead of `HStack` for Icon + Text Combinations
 
 **Why?**
@@ -266,6 +268,8 @@ Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
 
 # 💠 View Composition & Structure
 
+<br>
+
 ### Avoid Using Outer Padding for Reusable Components
 
 **Why?**
@@ -435,6 +439,8 @@ AppPicker()
 
 # 💠 State Management & Data Flow
 
+<br>
+
 ### How to Choose Property Keywords for Your `View`?
 
 **Why?**
@@ -536,6 +542,8 @@ struct ProductCard: View {
 <!---------------------------------------------------------------------------------------------------------------------------->
 
 # 💠 Performance Optimization
+
+<br>
 
 ### Avoid Using `AnyView` — Prefer `@ViewBuilder`
 
@@ -920,6 +928,8 @@ struct ProductListView: View {
 <!---------------------------------------------------------------------------------------------------------------------------->
 
 # 💠 Code Clarity & Maintainability
+
+<br>
 
 ### Prefer Explicit Parameters Over Trailing Closures for Callbacks
 
