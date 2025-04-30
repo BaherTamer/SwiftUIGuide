@@ -37,7 +37,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 **Performance Optimization**
 * Avoid Using `AnyView` — Prefer `@ViewBuilder`
 * Use Lazy Stacks for Scrollable Content
-* Avoid Expensive Computations Inside the View Body
+* Avoid Expensive Computations Inside The View Body
 * Prefer Modifying View Properties Over `if-else` Splits
 * Use if Statements to Add or Remove Views Dynamically
 * Avoid if Conditions Inside `ForEach`
@@ -529,21 +529,389 @@ struct ProductCard: View {
 }
 ```
 
+---
+
+<br>
+
+<!---------------------------------------------------------------------------------------------------------------------------->
+
+# 💠 Performance Optimization
+
+### Avoid Using `AnyView` — Prefer `@ViewBuilder`
+
+**Why?**
+> Using `AnyView` hides the real type of your SwiftUI views, making it harder for SwiftUI to optimize rendering, diffing, and animation. It forces SwiftUI to treat the view as opaque, losing all the benefits of type-safety, performance optimizations, and compile-time checks. Instead, use `@ViewBuilder` to return different view types while preserving SwiftUI’s ability to optimize.
+
+**Apple's SwiftUI Team Says:**
+> `AnyView` makes it hard for SwiftUI to optimize and identify each view because it sees the return value for all as `AnyView`, avoid it as much as possible, use `@ViewBuilder` if needed.
+
+``` swift
+// Avoid
+func makeContent() -> AnyView {
+    if isPremium {
+        return AnyView(...)
+    } else {
+        return AnyView(...)
+    }
+}
+```
+
+``` swift
+// Use
+@ViewBuilder
+func makeContent() -> some View {
+    if isPremium {
+        ...
+    } else {
+        ...
+    }
+}
+```
+
 <br>
 
 ---
 
 <br>
 
+### Use Lazy Stacks for Scrollable Content
 
+**Why?**
+> When you have a scrollable view that contains a list of items, you should use lazy containers (`LazyVStack`, `LazyHStack`) instead of regular stacks. Lazy stacks only create the views currently needed for display, improving performance, memory usage, and scrolling smoothness, especially with large data sets.
 
+``` swift
+// Avoid
+ScrollView {
+    VStack {
+        ForEach(0..<1000) { index in
+            ...
+        }
+    }
+}
+```
 
+``` swift
+// Use
+ScrollView {
+    LazyVStack {
+        ForEach(0..<1000) { index in
+            ...
+        }
+    }
+}
+```
 
+<br>
 
+---
 
+<br>
 
+### Avoid Expensive Computations Inside The View Body
 
+**Why?**
+> If a property is computed directly inside a view’s body, it can make the view expensive to evaluate. SwiftUI recomputes the body frequently, so heavy calculations inside it can cause slow UI updates, stuttering animations, and poor performance. Instead, precompute values outside the body using computed properties.
 
+**Apple's SwiftUI Team Says:**
+> Avoid inline filtering: `ForEach(dogs.filter(…))`. The inline filter here is linear over the collection. This might work in a prototype, but when the collection scales, this operation can quickly become expensive, leading to a slow update. It's better to move it out to the model.
+
+**Apple's SwiftUI Team Says:**
+> Common sources of slow updates:
+> 1. Expensive view body: a dynamic property could be computed from a view’s body, making the view expensive to evaluate.
+> 2. Make sure to check for expensive string interpolation or operations like data filtering and other work inside of body.
+
+``` swift
+// Avoid
+struct ContentView: View {
+    var body: some View {
+        List(allItems.filter({$0.isActive})) { item in
+            ...
+        }
+    }
+}
+```
+
+``` swift
+// Use
+struct ContentView: View {
+    private var filteredItems: [Item] {
+        allItems.filter({$0.isActive}))
+    }
+
+    var body: some View {
+        List(filteredItems) { item in
+            ...
+        }
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Prefer Modifying View Properties Over `if-else` Splits
+
+**Why?**
+> In SwiftUI, an `if-else` statement creates two separate view identities behind the scenes. This can cause unnecessary view invalidation, animation glitches, and state resets when toggling between the conditions. Instead, it’s better to modify view properties based on the condition while keeping the same view identity. SwiftUI can then differentiate and update the view efficiently.
+
+**Apple's SwiftUI Team Says:**
+> If else statement and inert modifier are forms of structure identity. However, From SwiftUI point of view, the `if-else` statement represents two different views with distinct identities. To make those views the same identity, we’d need to apply the condition in other ways, for example via an inert view modifier. Both of these strategies can work, but SwiftUI generally recommends the second approach. By default, try to preserve identity and provide more fluid transitions: this also helps preserve your view’s lifetime and state.
+
+**Apple's SwiftUI Team Says:**
+> You should try to push your conditions into your modifiers as much as possible. Because that will help SwiftUI detect those changes and give you better animations. That if statement syntax really great if your intention is to actually add or remove views from your hierarchy. 
+
+``` swift
+// Avoid
+if condition {
+    contentView
+        .foregroundStyle(.green)
+        .frame(maxHeight: .infinity, alignment: .top)
+} else {
+    contentView
+        .foregroundStyle(.red)
+        .frame(maxHeight: .infinity, alignment: .bottom)
+}
+```
+
+``` swift
+// Use
+contentView
+    .foregroundStyle(condition ? .green : .red)
+    .frame(
+        maxHeight: .infinity,
+        alignment: condition ? .top : .bottom
+    )
+```
+
+<br>
+
+---
+
+<br>
+
+### Use if Statements to Add or Remove Views Dynamically
+
+**Why?**
+> Using an if statement to conditionally add or remove views creates a clear and stable view hierarchy that SwiftUI can easily manage and optimize. It’s better than hiding views with `opacity` or setting them empty manually using `EmptyView`.
+
+**Tip:**
+> To create smooth animations, combine the if condition with `animation` or `transition` modifiers.
+
+``` swift
+// Use
+@ViewBuilder
+func saleTag(_ value: Int?) -> some View {
+    if let value {
+        // Content
+            .transition(...)
+            .animation(...)
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Avoid Adding if Conditions Inside `ForEach`
+
+**Why?**
+> This leads to dynamic view counts (either 0 or 1 view per item) to determine whether it's displayed or not. SwiftUI has to build all possible views just to figure out the identifiers and layout, which hurts performance, especially in large lists. Instead, filter the array first, then pass the filtered result into `ForEach`.
+
+**Apple's SwiftUI Team Says:**
+> It might be tempting to add a filter using a conditional view. The number of views became variable, it's either one or zero. This is bad because it results in list needing to build all the views to retrieve the row identifiers because it doesn't know how many views each element resolves to.
+
+``` swift
+// Avoid
+struct ContentView: View {
+    var body: some View {
+        ...
+        ForEach(allItems) { item in
+            if item.isActive {
+                ...
+            }
+        }
+        ...
+    }
+}
+```
+
+``` swift
+// Use
+struct ContentView: View {
+    private var filteredItems: [Item] {
+        allItems.filter({$0.isActive}))
+    }
+
+    var body: some View {
+        ...
+        ForEach(filteredItems) { item in
+            ...
+        }
+        ...
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Dynamic Data in `ForEach` Must Be `Hashable`
+
+**Why?**
+> SwiftUI relies on each item’s hash value to assign a unique identity. This allows SwiftUI to efficiently detect changes and update only the necessary views instead of rebuilding the entire hierarchy.
+
+**Apple's SwiftUI Team Says:**
+> Any dynamic collection of data used in `ForEach` this property must be hashable because SwiftUI is going to use its value to assign an identity to all the views generated from the elements of the collection.
+
+``` swift
+// Use
+struct User: Hashable {
+    let id: String
+    let name: String
+}
+
+ForEach(users, id: \.id) { user in
+    ...
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Use Stable & Unique Identifiers for `ForEach`
+
+**Why?**
+> When using `ForEach`, you must provide a stable (not changing) and unique identifier for each element. This helps SwiftUI track view identity correctly. Avoid using `.self` or iterating over indices, as these often lead to unstable or duplicate Ids.
+
+**Apple's SwiftUI Team Says:**
+> Use stable unique identifiers for items in a collection to be used as id in `ForEach`. This ensures that animations look great, performance is smooth, and the dependencies of your hierarchy are reflected in the most efficient form.
+
+``` swift
+// Avoid
+ForEach(users, id: \.self) { user in
+    ...
+}
+
+ForEach(items.indices) { index in
+    ...
+}
+```
+
+``` swift
+// Use
+ForEach(users, id: \.email) { user in
+    ...
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Don’t Instantiate State Properties
+
+**Why?**
+> Dynamic property instantiation (e.g., creating a `@StateObject` or `initializing` @State values inside a view) can lead to slow updates, unexpected reinitializations, and inefficient UI rebuilding. Instead, inject dependencies and bind values using `@ObservedObject` or `@Binding` to make your views lighter, faster, and more predictable.
+
+**Apple's SwiftUI Team Says:**
+> Common sources of slow updates: Dynamic Property instantiation, such as allocating and initializing a state object or initializing state.
+
+``` swift
+// Avoid
+struct ContentView: View {
+    @StateObject var viewModel: ContentVM
+}
+
+struct ContentView: View {
+    @State var age: Int
+}
+```
+
+``` swift
+// Use
+struct ContentView: View {
+    @ObservedObject var viewModel: ContentVM
+}
+
+struct ContentView: View {
+    @Binding var age: Int
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Use `.task` for Long-Running Work in `ObservableObject`
+
+**Why?**
+> Running long operations during initialization or synchronously inside a model can block the main thread, causing slow updates, blank screens, or UI delays.
+
+**Apple's SwiftUI Team Says:**
+> **Common sources of slow updates:** Not using `.task` modifier for a function that takes long time in `observableObject`.
+
+``` swift
+// Avoid
+@MainActor
+final class ProductListVM: ObservableObject {
+    @Published var products: [Product] = []
+
+    init() {
+        loadProducts()
+    }
+
+    private func loadProducts() {
+        // Takes a long time
+    }
+}
+
+struct ProductListView: View {
+    @StateObject private var viewModel = ProductListVM()
+
+    var body: some View {
+        ProductsListView()
+    }
+}
+```
+
+``` swift
+// Use
+@MainActor
+final class ProductListVM: ObservableObject {
+    @Published var products: [Product] = []
+
+    func loadProducts() async {
+        // Takes a long time
+    }
+}
+
+struct ProductListView: View {
+    @StateObject private var viewModel = ProductListVM()
+
+    var body: some View {
+        ProductsListView()
+            .task {
+                await viewModel.loadProducts()
+            }
+    }
+}
+```
 
 
 
@@ -718,380 +1086,8 @@ struct ColorBackgroundModifier: ViewModifier {
 
 
 
-### 🌟 Avoid Using `AnyView` — Prefer `@ViewBuilder` When Needed
 
-**Why?**
-> Using `AnyView` hides the real type of your SwiftUI views, making it harder for SwiftUI to optimize rendering, diffing, and animation. It forces SwiftUI to treat the view as opaque, losing all the benefits of type-safety, performance optimizations, and compile-time checks. Instead, use `@ViewBuilder` to return different view types while preserving SwiftUI’s ability to optimize.
 
-**Apple's SwiftUI Team Says:**
-> `AnyView` makes it hard for SwiftUI to optimize and identify each view because it sees the return value for all as `AnyView`, avoid it as much as possible, use `@ViewBuilder` if needed.
 
-``` swift
-// Avoid
-func makeContent() -> AnyView {
-    if isPremium {
-        return AnyView(...)
-    } else {
-        return AnyView(...)
-    }
-}
-```
 
-``` swift
-// Use
-@ViewBuilder
-func makeContent() -> some View {
-    if isPremium {
-        ...
-    } else {
-        ...
-    }
-}
-```
 
-<br>
-
----
-
-<br>
-
-### 🌟 Use Lazy Stacks With Scrollable Content
-
-**Why?**
-> When you have a scrollable view that contains a list of items, you should use lazy containers (`LazyVStack`, `LazyHStack`) instead of regular stacks. Lazy stacks only create the views currently needed for display, improving performance, memory usage, and scrolling smoothness, especially with large data sets.
-
-``` swift
-// Avoid
-ScrollView {
-    VStack {
-        ForEach(0..<1000) { index in
-            ...
-        }
-    }
-}
-```
-
-``` swift
-// Use
-ScrollView {
-    LazyVStack {
-        ForEach(0..<1000) { index in
-            ...
-        }
-    }
-}
-```
-
-<br>
-
----
-
-<br>
-
-### 🌟 Prefer Modifying View Properties Instead of Splitting Views With `if-else`
-
-**Why?**
-> In SwiftUI, an `if-else` statement creates two separate view identities behind the scenes. This can cause unnecessary view invalidation, animation glitches, and state resets when toggling between the conditions. Instead, it’s better to modify view properties based on the condition while keeping the same view identity. SwiftUI can then differentiate and update the view efficiently.
-
-**Apple's SwiftUI Team Says:**
-> If else statement and inert modifier are forms of structure identity. However, From SwiftUI point of view, the `if-else` statement represents two different views with distinct identities. To make those views the same identity, we’d need to apply the condition in other ways, for example via an inert view modifier. Both of these strategies can work, but SwiftUI generally recommends the second approach. By default, try to preserve identity and provide more fluid transitions: this also helps preserve your view’s lifetime and state.
-
-**Apple's SwiftUI Team Says:**
-> You should try to push your conditions into your modifiers as much as possible. Because that will help SwiftUI detect those changes and give you better animations. That if statement syntax really great if your intention is to actually add or remove views from your hierarchy. 
-
-``` swift
-// Avoid
-if condition {
-    contentView
-        .foregroundStyle(.green)
-        .frame(maxHeight: .infinity, alignment: .top)
-} else {
-    contentView
-        .foregroundStyle(.red)
-        .frame(maxHeight: .infinity, alignment: .bottom)
-}
-```
-
-``` swift
-// Use
-contentView
-    .foregroundStyle(condition ? .green : .red)
-    .frame(
-        maxHeight: .infinity,
-        alignment: condition ? .top : .bottom
-    )
-```
-
-<br>
-
----
-
-<br>
-
-### 💠 Use if Statements to Add or Remove Views Dynamically
-
-**Why?**
-> Using an if statement to conditionally add or remove views creates a clear and stable view hierarchy that SwiftUI can easily manage and optimize. It’s better than hiding views with `opacity` or setting them empty manually using `EmptyView`.
-
-**Tip:**
-> To create smooth animations, combine the if condition with `animation` or `transition` modifiers.
-
-``` swift
-// Use
-@ViewBuilder
-func saleTag(_ value: Int?) -> some View {
-    if let value {
-        // Content
-            .transition(...)
-            .animation(...)
-    }
-}
-```
-
-<br>
-
----
-
-<br>
-
-### 🌟 Don’t Instantiate State Properties
-
-**Why?**
-> Dynamic property instantiation (e.g., creating a `@StateObject` or `initializing` @State values inside a view) can lead to slow updates, unexpected reinitializations, and inefficient UI rebuilding. Instead, inject dependencies and bind values using `@ObservedObject` or `@Binding` to make your views lighter, faster, and more predictable.
-
-**Apple's SwiftUI Team Says:**
-> Common sources of slow updates: Dynamic Property instantiation, such as allocating and initializing a state object or initializing state.
-
-``` swift
-// Avoid
-struct ContentView: View {
-    @StateObject var viewModel: ContentVM
-}
-
-struct ContentView: View {
-    @State var age: Int
-}
-```
-
-``` swift
-// Use
-struct ContentView: View {
-    @ObservedObject var viewModel: ContentVM
-}
-
-struct ContentView: View {
-    @Binding var age: Int
-}
-```
-
-<br>
-
----
-
-<br>
-
-### 🌟 Avoid Expensive Computations Inside The View Body
-
-**Why?**
-> If a property is computed directly inside a view’s body, it can make the view expensive to evaluate. SwiftUI recomputes the body frequently, so heavy calculations inside it can cause slow UI updates, stuttering animations, and poor performance. Instead, precompute values outside the body using computed properties.
-
-**Apple's SwiftUI Team Says:**
-> Avoid inline filtering: `ForEach(dogs.filter(…))`. The inline filter here is linear over the collection. This might work in a prototype, but when the collection scales, this operation can quickly become expensive, leading to a slow update. It's better to move it out to the model.
-
-**Apple's SwiftUI Team Says:**
-> Common sources of slow updates:
-> 1. Expensive view body: a dynamic property could be computed from a view’s body, making the view expensive to evaluate.
-> 2. Make sure to check for expensive string interpolation or operations like data filtering and other work inside of body.
-
-``` swift
-// Avoid
-struct ContentView: View {
-    var body: some View {
-        List(allItems.filter({$0.isActive})) { item in
-            ...
-        }
-    }
-}
-```
-
-``` swift
-// Use
-struct ContentView: View {
-    private var filteredItems: [Item] {
-        allItems.filter({$0.isActive}))
-    }
-
-    var body: some View {
-        List(filteredItems) { item in
-            ...
-        }
-    }
-}
-```
-
-<br>
-
----
-
-<br>
-
-### 🌟 Avoid Adding if Conditions Inside `ForEach`
-
-**Why?**
-> This leads to dynamic view counts (either 0 or 1 view per item) to determine whether it's displayed or not. SwiftUI has to build all possible views just to figure out the identifiers and layout, which hurts performance, especially in large lists. Instead, filter the array first, then pass the filtered result into `ForEach`.
-
-**Apple's SwiftUI Team Says:**
-> It might be tempting to add a filter using a conditional view. The number of views became variable, it's either one or zero. This is bad because it results in list needing to build all the views to retrieve the row identifiers because it doesn't know how many views each element resolves to.
-
-``` swift
-// Avoid
-struct ContentView: View {
-    var body: some View {
-        ...
-        ForEach(allItems) { item in
-            if item.isActive {
-                ...
-            }
-        }
-        ...
-    }
-}
-```
-
-``` swift
-// Use
-struct ContentView: View {
-    private var filteredItems: [Item] {
-        allItems.filter({$0.isActive}))
-    }
-
-    var body: some View {
-        ...
-        ForEach(filteredItems) { item in
-            ...
-        }
-        ...
-    }
-}
-```
-
-<br>
-
----
-
-<br>
-
-### 🌟 Dynamic Data Must Be Hashable, in `ForEach`
-
-**Why?**
-> SwiftUI relies on each item’s hash value to assign a unique identity. This allows SwiftUI to efficiently detect changes and update only the necessary views instead of rebuilding the entire hierarchy.
-
-**Apple's SwiftUI Team Says:**
-> Any dynamic collection of data used in `ForEach` this property must be hashable because SwiftUI is going to use its value to assign an identity to all the views generated from the elements of the collection.
-
-``` swift
-// Use
-struct User: Hashable {
-    let id: String
-    let name: String
-}
-
-ForEach(users, id: \.id) { user in
-    ...
-}
-```
-
-<br>
-
----
-
-<br>
-
-### 🌟 Use Stable & Unique Identifiers for `ForEach`
-
-**Why?**
-> When using `ForEach`, you must provide a stable (not changing) and unique identifier for each element. This helps SwiftUI track view identity correctly. Avoid using `.self` or iterating over indices, as these often lead to unstable or duplicate Ids.
-
-**Apple's SwiftUI Team Says:**
-> Use stable unique identifiers for items in a collection to be used as id in `ForEach`. This ensures that animations look great, performance is smooth, and the dependencies of your hierarchy are reflected in the most efficient form.
-
-``` swift
-// Avoid
-ForEach(users, id: \.self) { user in
-    ...
-}
-
-ForEach(items.indices) { index in
-    ...
-}
-```
-
-``` swift
-// Use
-ForEach(users, id: \.email) { user in
-    ...
-}
-```
-
-<br>
-
----
-
-<br>
-
-
-
-### 🌟 Use `.task` for Long-Running Work in `ObservableObject`
-
-**Why?**
-> Running long operations during initialization or synchronously inside a model can block the main thread, causing slow updates, blank screens, or UI delays.
-
-**Apple's SwiftUI Team Says:**
-> **Common sources of slow updates:** Not using `.task` modifier for a function that takes long time in `observableObject`.
-
-``` swift
-// Avoid
-@MainActor
-final class ProductListVM: ObservableObject {
-    @Published var products: [Product] = []
-
-    init() {
-        loadProducts()
-    }
-
-    private func loadProducts() {
-        // Takes a long time
-    }
-}
-
-struct ProductListView: View {
-    @StateObject private var viewModel = ProductListVM()
-
-    var body: some View {
-        ProductsListView()
-    }
-}
-```
-
-``` swift
-// Use
-@MainActor
-final class ProductListVM: ObservableObject {
-    @Published var products: [Product] = []
-
-    func loadProducts() async {
-        // Takes a long time
-    }
-}
-
-struct ProductListView: View {
-    @StateObject private var viewModel = ProductListVM()
-
-    var body: some View {
-        ProductsListView()
-            .task {
-                await viewModel.loadProducts()
-            }
-    }
-}
-```
