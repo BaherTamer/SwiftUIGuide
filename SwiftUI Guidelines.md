@@ -913,67 +913,15 @@ struct ProductListView: View {
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<br>
-
 ---
 
 <br>
 
-<br>
+<!---------------------------------------------------------------------------------------------------------------------------->
 
----
+# 💠 Code Clarity & Maintainability
 
-<br>
-
-<br>
-
----
-
-<br>
-
-
-### 💠 Prefer Explicit Parameters Over Trailing Closures for Callbacks
+### Prefer Explicit Parameters Over Trailing Closures for Callbacks
 
 **Why?**
 > When a function or initializer has one or more callbacks, using explicit parameter labels improves clarity. It makes the code easier to read, reason about, and maintain — especially when scanning quickly or working with unfamiliar code.
@@ -1005,7 +953,7 @@ SheetView(
 
 <br>
 
-### 💠 Prefer Passing Function Names Instead of Closures
+### Prefer Passing Function Names Instead of Closures
 
 **Why?**
 > Passing a function name directly makes your code cleaner, shorter, and more readable. It avoids unnecessary closures, improves clarity.
@@ -1035,11 +983,7 @@ private func stateDidChange(_ oldValue: Int, newValue: Int) {}
 
 <br>
 
-
-
-
-
-### 💠 Use Custom Modifiers Only When Necessary — Otherwise, Use `View` Extensions
+### Use Custom Modifiers Only When Necessary
 
 **Why?**
 > Custom modifiers should be used only when you need to work with SwiftUI state, environment properties, or manage complex view-specific logic. For simple visual modifications, creating a `View` extension function is a cleaner, simpler approach that improves readability and reduces unnecessary complexity in your code.
@@ -1077,17 +1021,3 @@ struct ColorBackgroundModifier: ViewModifier {
     }
 }
 ```
-
-<br>
-
----
-
-<br>
-
-
-
-
-
-
-
-
