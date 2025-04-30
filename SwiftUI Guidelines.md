@@ -10,7 +10,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 <br>
 
 # Table of Contents
-**Core SwiftUI Components & Best Practices**
+[**Core SwiftUI Components & Best Practices**](#-core-swiftui-components--best-practices)
 * Use `Label` Instead of `HStack` for Icon + Text Combinations
 * Use `LabeledContent` Instead of `HStack` for Label + Value Layouts
 * Use `LocalizedStringKey` for Reusable Components
