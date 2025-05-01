@@ -45,6 +45,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Use Stable & Unique Identifiers for `ForEach`](#use-stable--unique-identifiers-for-foreach)
 * [Don’t Instantiate State Properties](#dont-instantiate-state-properties)
 * [Use `.task` for Long-Running Work in `ObservableObject`](#use-task-for-long-running-work-in-observableobject)
+* [Avoid Escaping Closures for `View` Content](#avoid-escaping-closures-for-view-content)
 
 <br>
 
@@ -944,6 +945,63 @@ struct ProductListView: View {
             .task {
                 await viewModel.loadProducts()
             }
+    }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Avoid Escaping Closures for `View` Content
+
+**Why?**
+> When you store a closure that builds a view instead of evaluating it immediately and storing the resulting view, SwiftUI can’t optimize rendering efficiently because it can’t compare closures for equality. This breaks memoization and can even cause glitches when state changes due to state sync issues.
+
+``` swift
+// Avoid
+struct Collapsable<Content: View>: View {
+    @State private var collapsed = true
+    let content: () -> Content // Escaping
+
+    init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+    }
+
+    var body: some View {
+        VStack {
+            if !collapsed {
+                content() // evaluated dynamically
+            }
+            Button(collapsed ? "↓ open" : "↑ close") {
+                collapsed.toggle()
+            }
+        }
+    }
+}
+```
+
+``` swift
+// Use
+struct Collapsable<Content: View>: View {
+    @State private var collapsed = true
+    let content: Content // Stored as value
+
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content() // evaluated immediately
+    }
+
+    var body: some View {
+        VStack {
+            if !collapsed {
+                content
+            }
+            Button(collapsed ? "↓ open" : "↑ close") {
+                collapsed.toggle()
+            }
+        }
     }
 }
 ```
