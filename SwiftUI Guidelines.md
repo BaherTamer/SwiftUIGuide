@@ -288,6 +288,35 @@ Text(500, format: .currency(code: "egp")) // EGP 500
 Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
 ```
 
+<br>
+
+---
+
+<br>
+
+### Apply Scrolling Only When Content is Large
+
+> SwiftUI’s `.scrollBounceBehavior(.basedOnSize)` ensures that bounce effects are only applied when the content is larger than the container, making your scroll views feel more natural and efficient.
+
+``` swift
+// Not Optimal
+ScrollView {
+    VStack {
+        // content
+    }
+}
+```
+
+``` swift
+// Optimal
+ScrollView {
+    VStack {
+        // content
+    }
+}
+.scrollBounceBehavior(.basedOnSize)
+```
+
 ---
 
 <br>
