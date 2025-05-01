@@ -18,6 +18,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Use `ImageResource` Instead of `String` for Image Names](#use-imageresource-instead-of-string-for-image-names)
 * [Use `ColorResource` Instead of `String` for Colors](#use-colorresource-instead-of-string-for-colors)
 * [Use `Text` `format` Parameter for Consistent Formatting](#use-text-format-parameter-for-consistent-formatting)
+* [Apply Scrolling Only When Content is Large](#apply-scrolling-only-when-content-is-large)
 
 <br>
 
