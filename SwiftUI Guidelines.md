@@ -79,7 +79,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 | Title | Link | Description |
 | ----- | ---- | ----------- |
 | Format Styles | [Website Link](https://goshdarnformatstyle.com) | All SwiftUI format styles with examples |
-| SwiftSafeUI | [GitHub Link](https://github.com/BaherTamer/SwiftSafeUI) - [Documentation Link](bahertamer.github.io/SwiftSafeUI/) | Encapsulates SwiftUI deprecation handling logic. |
+| SwiftSafeUI | [GitHub Link](https://github.com/BaherTamer/SwiftSafeUI) - [Documentation Link](https://bahertamer.github.io/SwiftSafeUI/documentation/swiftsafeui/) | Encapsulates SwiftUI deprecation handling logic. |
 | Inject | [GitHub Link](https://github.com/krzysztofzablocki/Inject) - [Tutorial Link](https://www.youtube.com/watch?v=lbsXuCYTpkY&t=297s) | Hot Reloading for Swift applications |
 
 <br>
