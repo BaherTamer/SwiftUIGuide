@@ -61,8 +61,19 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 
 <br>
 
+# Tools
+
+| Title | Link | Description |
+| ----- | ---- | ----------- |
+| Format Styles | [Website Link](https://goshdarnformatstyle.com) | All SwiftUI format styles with examples |
+| SwiftSafeUI | [GitHub Link](https://github.com/BaherTamer/SwiftSafeUI) - [Documentation Link](https://bahertamer.github.io/SwiftSafeUI/documentation/swiftsafeui/) | Encapsulates SwiftUI deprecation handling logic. |
+| Inject | [GitHub Link](https://github.com/krzysztofzablocki/Inject) - [Tutorial Link](https://www.youtube.com/watch?v=lbsXuCYTpkY&t=297s) | Hot Reloading for Swift applications |
+
+<br>
+
 # Resources
 
+**WWDC Sessions**
 | Title | Link |
 | ----- | ---- |
 | SwiftUI Essentials 2019 | [Video Link](https://developer.apple.com/videos/play/wwdc2019/216) |
@@ -74,17 +85,12 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 | The Craft of SwiftUI API Design: Progressive Disclosure | [Video Link](https://developer.apple.com/videos/play/wwdc2022/10059) |
 | Demystify SwiftUI Performance | [Video Link](https://developer.apple.com/videos/play/wwdc2023/10160) |
 | SwiftUI Essentials 2024 | [Video Link](https://developer.apple.com/videos/play/wwdc2024/10150) |
+
+**Articles**
+| Title | Link |
+| ----- | ---- |
 | Don't Use Escaping Closures in SwiftUI | [Article Link](https://rensbr.eu/blog/swiftui-escaping-closures/) |
-
-<br>
-
-# Tools
-
-| Title | Link | Description |
-| ----- | ---- | ----------- |
-| Format Styles | [Website Link](https://goshdarnformatstyle.com) | All SwiftUI format styles with examples |
-| SwiftSafeUI | [GitHub Link](https://github.com/BaherTamer/SwiftSafeUI) - [Documentation Link](https://bahertamer.github.io/SwiftSafeUI/documentation/swiftsafeui/) | Encapsulates SwiftUI deprecation handling logic. |
-| Inject | [GitHub Link](https://github.com/krzysztofzablocki/Inject) - [Tutorial Link](https://www.youtube.com/watch?v=lbsXuCYTpkY&t=297s) | Hot Reloading for Swift applications |
+| GeometryReader: Blessing or Curse? | [Article Link](https://fatbobman.com/en/posts/geometryreader-blessing-or-curse/) |
 
 <br>
 
