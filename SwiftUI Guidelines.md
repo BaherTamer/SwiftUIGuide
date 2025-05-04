@@ -55,6 +55,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Prefer Explicit Parameters Over Trailing Closures for Callbacks](#prefer-explicit-parameters-over-trailing-closures-for-callbacks)
 * [Prefer Passing Function Names Instead of Closures](#prefer-passing-function-names-instead-of-closures)
 * [Use Custom Modifiers Only When Necessary](#use-custom-modifiers-only-when-necessary)
+* [State Should Be Marked `private`](#state-should-be-marked-private)
 
 <br>
 
@@ -1176,4 +1177,24 @@ struct ColorBackgroundModifier: ViewModifier {
             .background(color)
     }
 }
+```
+
+<br>
+
+---
+
+<br>
+
+### State Should Be Marked `private`
+
+**Why?**
+> This makes it clear what external data the view depends on, versus what it creates by itself, and makes code auto completion of the generated initializer more accurate.
+
+``` swift
+// Prefer
+@State private var item = Item()
+@StateObject private var object = Object()
+@AppStorage("flag") private var flag = false
+@Environment(\.colorScheme) private var colorScheme
+@EnvironmentObject private var globalObject: GlobalObject
 ```
