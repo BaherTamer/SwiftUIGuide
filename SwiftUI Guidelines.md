@@ -45,6 +45,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Dynamic Data in `ForEach` Must Be `Hashable`](#dynamic-data-in-foreach-must-be-hashable)
 * [Use Stable & Unique Identifiers for `ForEach`](#use-stable--unique-identifiers-for-foreach)
 * [Don’t Instantiate State Properties](#dont-instantiate-state-properties)
+* [Don’t Initialize `@ObservedObject`](#dont-initialize-observedobject)
 * [Use `.task` for Long-Running Work in `ObservableObject`](#use-task-for-long-running-work-in-observableobject)
 * [Avoid Escaping Closures for `View` Content](#avoid-escaping-closures-for-view-content)
 
@@ -915,6 +916,36 @@ struct ContentView: View {
 
 struct ContentView: View {
     @Binding var age: Int
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Don’t Initialize `@ObservedObject`
+
+**Why?**
+> Initializing an object with @ObservedObject directly in a SwiftUI view causes the object to be recreated every time the view reloads.
+
+``` swift
+// Avoid
+struct ContentView: View {
+    @ObservedObject var data = DataProvider()
+}
+```
+
+``` swift
+// Prefer
+struct ContentView: View {
+    @StateObject private var data = DataProvider()
+}
+
+// Or
+struct ContentView: View {
+    @ObservedObject var data: DataProvider
 }
 ```
 
