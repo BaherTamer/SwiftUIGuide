@@ -58,6 +58,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Prefer Passing Function Names Instead of Closures](#prefer-passing-function-names-instead-of-closures)
 * [Use Custom Modifiers Only When Necessary](#use-custom-modifiers-only-when-necessary)
 * [State Should Be Marked `private`](#state-should-be-marked-private)
+* [Separate Layout and Functionality in Views](#separate-layout-and-functionality-in-views)
 
 <br>
 
@@ -1273,4 +1274,37 @@ struct ColorBackgroundModifier: ViewModifier {
 @AppStorage("flag") private var flag = false
 @Environment(\.colorScheme) private var colorScheme
 @EnvironmentObject private var globalObject: GlobalObject
+```
+
+<br>
+
+---
+
+<br>
+
+### Separate Layout and Functionality in Views
+
+**Why?**
+> SwiftUI views should only declare UI, not embed business logic. Keeping logic separate makes your code easier to read and maintain.
+
+``` swift
+// Avoid
+Button("Start") {
+    showingLoading = true
+    apiService.start(onSuccess: {
+        ...
+    })
+}
+```
+
+``` swift
+// Prefer
+Button("Start", action: startButtonTapped)
+
+func startButtonTapped() {
+    showingLoading = true
+    apiService.start(onSuccess: {
+        ...
+    })
+}
 ```
