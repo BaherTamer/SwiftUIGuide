@@ -49,6 +49,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Don’t Initialize `@ObservedObject`](#dont-initialize-observedobject)
 * [Use `.task` for Long-Running Work in `ObservableObject`](#use-task-for-long-running-work-in-observableobject)
 * [Avoid Escaping Closures for `View` Content](#avoid-escaping-closures-for-view-content)
+* [Use `GeometryReader` Only When Necessary](#use-geometryreader-only-when-necessary)
 
 <br>
 
@@ -1101,6 +1102,39 @@ struct Collapsable<Content: View>: View {
             }
         }
     }
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Use `GeometryReader` Only When Necessary
+
+**Why?**
+> `GeometryReader` gives you access to layout metrics, but misusing it can significantly harm performance. When you use `GeometryReader`, SwiftUI needs to evaluate, lay out, and render the view once before it can retrieve geometry data. If you then adjust the layout based on that data, a second render cycle is triggered. This creates inefficiencies — especially when affecting large view hierarchies.
+>
+> **Best Practices:**
+> * Use GeometryReader only when built-in tools aren’t enough
+> * Limit the number of views affected by geometry changes (small components not entire screen)
+> * Extract only the necessary information (e.g., width, not full frame)
+
+``` swift
+// Avoid
+GeometryReader { proxy in
+    VStack {
+        // Fullscreen code...
+    }
+}
+```
+
+``` swift
+// Prefer
+GeometryReader { proxy in
+    Text(...)
+        .padding(proxy.size.width > 400 ? 30 : 10)
 }
 ```
 
