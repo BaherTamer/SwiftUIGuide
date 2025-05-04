@@ -110,7 +110,7 @@ HStack(spacer: 6) {
 ```
 
 ``` swift
-// Use
+// Prefer
 Label(
     title: titleText,
     icon: circleIcon
@@ -147,7 +147,7 @@ HStack {
 ```
 
 ``` swift
-// Use
+// Prefer
 LabeledContent(
     content: amountText,
     label: priceText
@@ -185,7 +185,7 @@ struct ReusableView: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 struct ReusableView: View {
     let title: LocalizedStringKey
 
@@ -212,7 +212,7 @@ Text("\(product.title) - \(product.price)")
 ```
 
 ``` swift
-// Use
+// Prefer
 Text(verbatim: "\(product.title) - \(product.price)")
 ```
 
@@ -233,7 +233,7 @@ Image("circle.fill")
 ```
 
 ``` swift
-// Use
+// Prefer
 Image(.circleFill)
 ```
 
@@ -254,7 +254,7 @@ Color("blue.light")
 ```
 
 ``` swift
-// Use
+// Prefer
 Color(.blueLight)
 ```
 
@@ -283,7 +283,7 @@ Text("\(dateFormatter.string(from: someDate))")
 ```
 
 ``` swift
-// Use
+// Prefer
 Text(12, format: .percent) // 12%
 Text(500, format: .currency(code: "egp")) // EGP 500
 Text(.now, format: .dateTime.day().month(.abbreviated)) // 27 Apr
@@ -353,7 +353,7 @@ struct ParentView: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 struct ReusableView: View {
     var body: some View {
         VStack {
@@ -393,7 +393,7 @@ CartView()
 ```
 
 ``` swift
-// Use
+// Prefer
 OrderDetailsScreen()
 CartScreen()
 ```
@@ -403,7 +403,7 @@ CartScreen()
 2️⃣ When creating a general reusable views that are not full screens but still serve as major components, use the `View` suffix.
 
 ``` swift
-// Use
+// Prefer
 ProductCardView()
 BannerView()
 ```
@@ -419,7 +419,7 @@ SectionHeaderView()
 ```
 
 ``` swift
-// Use
+// Prefer
 UnderlinedButton()
 SectionHeader()
 ```
@@ -429,7 +429,7 @@ SectionHeader()
 4️⃣ When creating small reusable components with names similar to built-in SwiftUI views (e.g., Slider, Picker), use the App prefix to distinguish your custom components from SwiftUI’s built-in ones.
 
 ``` swift
-// Use
+// Prefer
 AppSlider()
 AppPicker()
 ```
@@ -579,7 +579,7 @@ struct ProductCard: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 struct ProductCard: View {
     let title: String
     let barcode: String
@@ -623,7 +623,7 @@ func makeContent() -> AnyView {
 ```
 
 ``` swift
-// Use
+// Prefer
 @ViewBuilder
 func makeContent() -> some View {
     if isPremium {
@@ -657,7 +657,7 @@ ScrollView {
 ```
 
 ``` swift
-// Use
+// Prefer
 ScrollView {
     LazyVStack {
         ForEach(0..<1000) { index in
@@ -698,7 +698,7 @@ struct ContentView: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 struct ContentView: View {
     private var filteredItems: [Item] {
         allItems.filter({$0.isActive}))
@@ -743,7 +743,7 @@ if condition {
 ```
 
 ``` swift
-// Use
+// Prefer
 contentView
     .foregroundStyle(condition ? .green : .red)
     .frame(
@@ -767,7 +767,7 @@ contentView
 > To create smooth animations, combine the if condition with `animation` or `transition` modifiers.
 
 ``` swift
-// Use
+// Prefer
 @ViewBuilder
 func saleTag(_ value: Int?) -> some View {
     if let value {
@@ -808,7 +808,7 @@ struct ContentView: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 struct ContentView: View {
     private var filteredItems: [Item] {
         allItems.filter({$0.isActive}))
@@ -839,7 +839,7 @@ struct ContentView: View {
 > Any dynamic collection of data used in `ForEach` this property must be hashable because SwiftUI is going to use its value to assign an identity to all the views generated from the elements of the collection.
 
 ``` swift
-// Use
+// Prefer
 struct User: Hashable {
     let id: String
     let name: String
@@ -876,7 +876,7 @@ ForEach(items.indices) { index in
 ```
 
 ``` swift
-// Use
+// Prefer
 ForEach(users, id: \.email) { user in
     ...
 }
@@ -908,7 +908,7 @@ struct ContentView: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 struct ContentView: View {
     @ObservedObject var viewModel: ContentVM
 }
@@ -957,7 +957,7 @@ struct ProductListView: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 @MainActor
 final class ProductListVM: ObservableObject {
     @Published var products: [Product] = []
@@ -1014,7 +1014,7 @@ struct Collapsable<Content: View>: View {
 ```
 
 ``` swift
-// Use
+// Prefer
 struct Collapsable<Content: View>: View {
     @State private var collapsed = true
     let content: Content // Stored as value
@@ -1061,7 +1061,7 @@ SheetView {
 ```
 
 ``` swift
-// Use
+// Prefer
 SheetView(
     onSubmit: {
         // Submit Action
@@ -1094,7 +1094,7 @@ SheetView(
 ```
 
 ``` swift
-// Use
+// Prefer
 .onAppear(perform: viewOnAppear)
 .onChange(of: state, stateDidChange)
 
