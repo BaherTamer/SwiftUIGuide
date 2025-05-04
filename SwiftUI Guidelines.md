@@ -26,6 +26,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Avoid Using Outer Padding for Reusable Components](#avoid-using-outer-padding-for-reusable-components)
 * [Follow Consistent Naming Conventions for SwiftUI Views](#follow-consistent-naming-conventions-for-swiftui-views)
 * [When to Encapsulate a Component into Its Own `View` Struct?](#when-to-encapsulate-a-component-into-its-own-view-struct)
+* [Avoid using `UIScreen` Bounds](#avoid-using-uiscreen-bounds)
 
 <br>
 
@@ -434,6 +435,41 @@ SectionHeader()
 // Prefer
 AppSlider()
 AppPicker()
+```
+
+<br>
+
+---
+
+<br>
+
+### Avoid Using `UIScreen` Bounds
+
+**Why?**
+> Your view should not rely on `UIScreen.main.bounds` to determine its layout. Instead, design components to be flexible and adaptable to the space they are given. Also, `UIScreen.main.bounds` will not take into account any scaling or rotation of the device.
+> 
+> **Use instead layout tools like:**
+> * `Spacer()` to naturally fill or push content
+> * `GeometryReader` to adapt to available bounds
+> * `frame(maxWidth: .infinity)` to grow within flexible containers
+
+``` swift
+// Avoid
+.frame(width: UIScreen.main.bounds.width - 40)
+```
+
+``` swift
+// Prefer
+.frame(maxWidth: .infinity)
+.padding(.horizontal, 20)
+
+// Or
+GeometryReader { proxy in
+    VStack {
+        ...
+    }
+    .frame(width: proxy.size.width * 0.9)
+}
 ```
 
 <br>
