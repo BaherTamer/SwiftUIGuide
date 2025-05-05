@@ -92,6 +92,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 | Title | Link |
 | ----- | ---- |
 | SwiftUI View Lifecycle | [Article Link](https://www.vadimbulavin.com/swiftui-view-lifecycle/) |
+| View Communication Patterns in SwiftUI | [Article Link](https://www.vadimbulavin.com/passing-data-between-swiftui-views/) |
 | Don't Use Escaping Closures in SwiftUI | [Article Link](https://rensbr.eu/blog/swiftui-escaping-closures/) |
 | GeometryReader: Blessing or Curse? | [Article Link](https://fatbobman.com/en/posts/geometryreader-blessing-or-curse/) |
 
