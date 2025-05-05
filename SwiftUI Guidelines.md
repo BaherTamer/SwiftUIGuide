@@ -50,6 +50,7 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 * [Use `.task` for Long-Running Work in `ObservableObject`](#use-task-for-long-running-work-in-observableobject)
 * [Avoid Escaping Closures for `View` Content](#avoid-escaping-closures-for-view-content)
 * [Use `GeometryReader` Only When Necessary](#use-geometryreader-only-when-necessary)
+* [Split State into Custom Views](#split-state-into-custom-views)
 
 <br>
 
@@ -1118,6 +1119,62 @@ GeometryReader { proxy in
 GeometryReader { proxy in
     Text(...)
         .padding(proxy.size.width > 400 ? 30 : 10)
+}
+```
+
+<br>
+
+---
+
+<br>
+
+### Split State into Custom Views
+
+**Why?**
+> When a single view has a complex `body`, and is using multiple states/bindings/dependencies etc. the entire `body` will get re-evaluated when each of those values change.  However, if the view is using composition to split its `body` into multiple child views, when a value is changed, only the child’s using it will diff. But not their siblings
+
+``` swift
+// Avoid
+struct BigView: View {
+    @Binding user: User
+    @Environment private var colorScheme: ColorScheme
+    @State private var query: String = ""
+
+    var body: some View {
+        ... {
+            ... {
+                ...
+                TextField(text: $query, ...)
+            }
+
+            ... {
+                ...
+                Text(user.name)
+                ...
+            }
+
+            ... {
+                Button(...)
+                    .tint(colorScheme == .dark ? ...)
+            }
+        }
+    }
+}
+```
+
+``` swift
+// Prefer
+struct BigView: View {
+    @Binding user: User
+    @Environment private var colorScheme: ColorScheme
+    @State private var query: String = ""
+
+    var body: some View {
+        ... {
+            FirstView($query)
+            SecondView(model: user)
+            ThirdView(colorScheme)
+        }
 }
 ```
 
