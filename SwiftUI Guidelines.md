@@ -1068,47 +1068,23 @@ struct ProductListView: View {
 
 ``` swift
 // Avoid
-struct Collapsable<Content: View>: View {
-    @State private var collapsed = true
-    let content: () -> Content // Escaping
+struct ReusableView<Content: View>: View {
+  private let content: () -> Content
 
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content
-    }
-
-    var body: some View {
-        VStack {
-            if !collapsed {
-                content() // evaluated dynamically
-            }
-            Button(collapsed ? "↓ open" : "↑ close") {
-                collapsed.toggle()
-            }
-        }
-    }
+  init(@ViewBuilder content: @escaping () -> Content) {
+    self.content = content
+  }
 }
 ```
 
 ``` swift
 // Prefer
-struct Collapsable<Content: View>: View {
-    @State private var collapsed = true
-    let content: Content // Stored as value
+struct ReusableView<Content: View>: View {
+  private let content: Content
 
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content() // evaluated immediately
-    }
-
-    var body: some View {
-        VStack {
-            if !collapsed {
-                content
-            }
-            Button(collapsed ? "↓ open" : "↑ close") {
-                collapsed.toggle()
-            }
-        }
-    }
+  init(@ViewBuilder content: () -> Content) {
+    self.content = content()
+  }
 }
 ```
 
