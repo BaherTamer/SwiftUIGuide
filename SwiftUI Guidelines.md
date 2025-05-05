@@ -91,8 +91,15 @@ These guidelines are based on Apple’s official SwiftUI team recommendations an
 **Articles**
 | Title | Link |
 | ----- | ---- |
+| SwiftUI View Lifecycle | [Article Link](https://www.vadimbulavin.com/swiftui-view-lifecycle/) |
 | Don't Use Escaping Closures in SwiftUI | [Article Link](https://rensbr.eu/blog/swiftui-escaping-closures/) |
 | GeometryReader: Blessing or Curse? | [Article Link](https://fatbobman.com/en/posts/geometryreader-blessing-or-curse/) |
+
+**Videos**
+| Title | Link |
+| ----- | ---- |
+| SwiftUI Tutorials | [Video Link](https://www.youtube.com/@SwiftfulThinking/playlists) |
+| Stop Big-Head Components in SwiftUI | [Video Link](https://youtu.be/eB9_wyZbj6U) |
 
 <br>
 
